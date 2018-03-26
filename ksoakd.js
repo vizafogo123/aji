@@ -1,9 +1,22 @@
-function displayMessage() {
-  var divObj = document.getElementById("messageText");
-  if (divObj) {
-    divObj.innerHTML="<b>This is new Message from Javascript</b>"+t;
-  }
+document.getElementsByClassName("close")[0].onclick = function() {
+    document.getElementById('myModal').style.display = "none";
 }
 
+function displayMessage() {
+  document.getElementById('myModal').style.display = "block";
+}
+
+function imgsrc_from_formula(f){
+  return "http://latex.codecogs.com/svg.latex?"+f.to_latex()
+}
+
+
+var img = document.createElement("img");
+
+img.src = imgsrc_from_formula(a);
+var src = document.getElementById("modalbody");
+
+src.appendChild(img);
+
 var x = document.getElementById("im");
-x.src="http://latex.codecogs.com/svg.latex?"+a.to_latex()
+x.src=imgsrc_from_formula(a);
