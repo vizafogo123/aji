@@ -2,7 +2,7 @@ body {
   background-color:#50a;
 }
 
-.modal {
+#formula-builder {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -17,7 +17,7 @@ body {
 }
 
 /* Modal Content */
-.modal-content {
+#formula-builder-content {
     position: relative;
     background-color: #fff;
     margin: auto;
@@ -43,7 +43,7 @@ body {
     cursor: pointer;
 }
 
-.modal-header {
+#formula-builder-header {
     padding: 2px 16px;
     background-color: red;
     color: white;
@@ -51,7 +51,7 @@ body {
 
 .modal-body {padding: 2px 16px;}
 
-.modal-footer {
+#formula-builder-footer {
     padding: 2px 16px;
     background-color: red;
     color: white;

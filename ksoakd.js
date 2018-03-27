@@ -1,9 +1,9 @@
 document.getElementsByClassName("close")[0].onclick = function() {
-    document.getElementById('myModal').style.display = "none";
+    document.getElementById('formula-builder').style.display = "none";
 }
 
 function displayMessage() {
-  document.getElementById('myModal').style.display = "block";
+  document.getElementById('formula-builder').style.display = "block";
 }
 
 function imgsrc_from_formula(f){
@@ -14,7 +14,7 @@ function imgsrc_from_formula(f){
 var img = document.createElement("img");
 
 img.src = imgsrc_from_formula(a);
-var src = document.getElementById("modalbody");
+var src = document.getElementById("formula-builder-body");
 
 src.appendChild(img);
 

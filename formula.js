@@ -94,4 +94,11 @@ function Formula(body){
     }
     return false;
   }
+
+  this.fill_with_placeholders=function(){
+    var k=1+this.body.reduce(function(total,elem){return total+elem.no_of_args-1},0);
+    var bod=this.body.valueOf();
+    for (var i=0;i<k;i++) bod.push(PLACEHOLDER);
+    return new Formula(bod);
+  }
 }

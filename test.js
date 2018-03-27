@@ -48,5 +48,8 @@ assert(b.op_addable(A,"rel"))
 assert(!b.op_addable(B,"rel"))
 
 b=new Formula([FORALL,B,AND,FORALL,A,IN,A,A,EQUALS]);
-assert(!b.op_addable(A,"rel"))
-assert(b.op_addable(B,"rel"))
+assert(!b.op_addable(A,"rel"));
+assert(b.op_addable(B,"rel"));
+
+b=new Formula([FORALL,A,AND,OR]);
+assert(b.fill_with_placeholders().equals(new Formula([FORALL,A,AND,OR,PLACEHOLDER,PLACEHOLDER,PLACEHOLDER])))
