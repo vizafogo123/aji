@@ -1,3 +1,7 @@
+function imgsrc_from_formula(f){
+  return "http://latex.codecogs.com/svg.latex?"+f.to_latex()
+}
+
 function Formula(body){
   this.body=body;
 
