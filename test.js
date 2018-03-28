@@ -41,6 +41,8 @@ b=new Formula([]);
 assert(b.op_addable(IN,"rel"))
 assert(!b.op_addable(FORALL,"exp"))
 assert(!b.op_addable(A,"exp"))
+b.add_op(OR);
+assert(b.equals(new Formula([OR])));
 
 b=new Formula([FORALL,A,IN]);
 assert(!b.op_addable(IN,"rel"))
@@ -52,4 +54,6 @@ assert(!b.op_addable(A,"rel"));
 assert(b.op_addable(B,"rel"));
 
 b=new Formula([FORALL,A,AND,OR]);
-assert(b.fill_with_placeholders().equals(new Formula([FORALL,A,AND,OR,PLACEHOLDER,PLACEHOLDER,PLACEHOLDER])))
+assert(!b.is_closed());
+assert(b.fill_with_placeholders().equals(new Formula([FORALL,A,AND,OR,PLACEHOLDER,PLACEHOLDER,PLACEHOLDER])));
+assert(b.is_closed());

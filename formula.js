@@ -5,6 +5,10 @@ function imgsrc_from_formula(f){
 function Formula(body){
   this.body=body;
 
+  this.deepcopy=function(){
+    return new Formula(this.body.slice());
+  }
+
   this.negation=function(){
     if (body[0]===NOT){
       return new Formula(this.body.slice(1))
@@ -99,10 +103,19 @@ function Formula(body){
     return false;
   }
 
+  this.add_op=function(op){
+    this.body.push(op);
+  }
+
   this.fill_with_placeholders=function(){
     var k=1+this.body.reduce(function(total,elem){return total+elem.no_of_args-1},0);
-    var bod=this.body.valueOf();
-    for (var i=0;i<k;i++) bod.push(PLACEHOLDER);
-    return new Formula(bod);
+    for (var i=0;i<k;i++) this.body.push(PLACEHOLDER);
+    return this;
   }
+
+  this.is_closed=function(){
+    return this.body.reduce(function(total,elem){return total+elem.no_of_args-1},0)===-1;
+  }
+
+
 }
