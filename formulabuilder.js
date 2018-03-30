@@ -12,7 +12,7 @@
       return function(e){
         if (fbuilder_formula.op_addable(op,'rel')){
           fbuilder_formula.add_op(op);
-          refresh_result();
+          refresh();
         } else {console.log("oij")}
       }
     })(Operation.builtin_operations[i]));
@@ -21,11 +21,31 @@
   var img_result = document.createElement("img");
   foot.appendChild(img_result);
 
-  var refresh_result=function(){
-    img_result.src = imgsrc_from_formula(fbuilder_formula.deepcopy().fill_with_placeholders());
-  }
-  refresh_result();
 
+  var close=function(){
+    fbuilder_formula.body=[];
+    refresh();
+    document.getElementById('formula-builder').style.display = "none";
+  }
+
+  var button_done = document.createElement("button");
+  button_done.id="button-done";
+  button_done.textContent="done";
+  button_done.onclick=function(){
+    document.getElementById('im').src = img_result.src;
+    close();
+  }
+  foot.appendChild(button_done);
+
+  document.getElementsByClassName("close")[0].onclick = function() {
+      close();
+  }
+
+  var refresh=function(){
+    img_result.src = imgsrc_from_formula(fbuilder_formula.deepcopy().fill_with_placeholders());
+    button_done.disabled=!fbuilder_formula.is_closed();
+  }
+  refresh();
 
 
 })();

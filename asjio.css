@@ -56,9 +56,19 @@ body {
     background-color: red;
     color: white;
 }
+#formula-builder-body img {
+    width:30%;
+    height:20px;
+    margin:10px;
+}
 
 img:hover{
   background:yellow;
+  outline: 2px solid blue;
 }
 
+#button-done{
+    height:40px;
+    width:100px;
+}
 }

@@ -61,7 +61,7 @@ var t={
 		"name": "in",
 		"valence": 2,
 		"type": 3,
-		"print_scheme": "{} \\in {} "
+		"print_scheme": "%1 \\in %2 "
 	}],
 	"theorems": [{
 		"id": 1,
@@ -236,7 +236,7 @@ var t={
 			"name": "phi2",
 			"valence": 2,
 			"type": 3,
-			"print_scheme": "\\phi \\left( {} , {} \\right) "
+			"print_scheme": "\\phi \\left( %1 , %2 \\right) "
 		}],
 		"var_print_schemes": {
 			"var1": "a ",
@@ -371,7 +371,7 @@ var t={
 			"name": "phi1",
 			"valence": 1,
 			"type": 3,
-			"print_scheme": "\\phi \\left( {} \\right) "
+			"print_scheme": "\\phi \\left( %1 \\right) "
 		}],
 		"var_print_schemes": {
 			"var1": "a ",
