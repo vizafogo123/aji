@@ -1,4 +1,5 @@
 (function() {
+  var fbuilder=document.getElementById('formula-builder');
   var bod = document.getElementById("formula-builder-body");
   var foot = document.getElementById("formula-builder-footer");
   var fbuilder_formula = new Formula([]);
@@ -27,15 +28,17 @@
   var close = function() {
     fbuilder_formula.body = [];
     refresh();
-    document.getElementById('formula-builder').style.display = "none";
+    fbuilder.style.display = "none";
   }
 
+  var after = function(f) {};
   var button_done = document.createElement("button");
   button_done.id = "button-done";
   button_done.textContent = "done";
   button_done.onclick = function() {
-    document.getElementById('im').src = img_result.src;
+    after(fbuilder_formula);
     close();
+
   }
   foot.appendChild(button_done);
 
@@ -49,5 +52,9 @@
   }
   refresh();
 
+  fbuilder_show = function(a) {
+    fbuilder.style.display = "block";
+    after = a;
+  }
 
 })();

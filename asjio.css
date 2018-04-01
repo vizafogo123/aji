@@ -1,5 +1,14 @@
+/*
+#002a32 maastricht blue
+#c4a29e tuscany
+#eba6a9 pastel pink
+#ffc6ac peach
+#f40076 winter sky
+*/
+
+
 body {
-  background-color:#50a;
+  background-color:#c4a29e;
 }
 
 #formula-builder {
@@ -45,7 +54,7 @@ body {
 
 #formula-builder-header {
     padding: 2px 16px;
-    background-color: red;
+    background-color: #002a32;
     color: white;
 }
 
@@ -53,7 +62,7 @@ body {
 
 #formula-builder-footer {
     padding: 2px 16px;
-    background-color: red;
+    background-color: #002a32;
     color: white;
 }
 #formula-builder-body img {
@@ -62,13 +71,24 @@ body {
     margin:10px;
 }
 
+#formula-builder-body{
+  background:#ffc6ac;
+}
+
 img:hover{
-  background:yellow;
-  outline: 2px solid blue;
+  background:#ffc6ac;
+  outline: 2px solid #002a32;
 }
 
 #button-done{
     height:40px;
     width:100px;
 }
+
+ul img{
+    height:20px;
+    width:100%;
+    padding:5px;
+}
+
 }
