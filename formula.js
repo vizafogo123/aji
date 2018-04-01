@@ -2,6 +2,14 @@ function imgsrc_from_formula(f){
   return "http://latex.codecogs.com/svg.latex?"+f.to_latex()
 }
 
+var array_equal=function(a,b){
+  if (a.length!==b.length) return false;
+  for(var i=0;i<a.length;i++){
+    if (a[i]!==b[i]) return false;
+  }
+  return true;
+}
+
 function Formula(body){
   this.body=body;
 
@@ -18,11 +26,7 @@ function Formula(body){
   }
 
   this.equals=function(f){
-    if (this.body.length!==f.body.length) return false;
-    for(var i=0;i<this.body.length;i++){
-      if (this.body[i]!==f.body[i]) return false;
-    }
-    return true;
+    return array_equal(this.body,f.body);
   }
 
   this.start_of_child=function(n,k){
@@ -117,5 +121,26 @@ function Formula(body){
     return this.body.reduce(function(total,elem){return total+elem.no_of_args-1},0)===-1;
   }
 
+  this.substitute_parallel=function(source_list, dest_list){
+    var k = 0;
+    res = this.deepcopy();
+    while (k < res.body.length){
+        var b = true;
+        for (var n=0;n<source_list.length;n++){
+            if (b && array_equal(res.body.slice(k,k + source_list[n].body.length), source_list[n].body)){
+                res.body = res.body.slice(0,k).concat(dest_list[n].body)
+                  .concat(res.body.slice(k + source_list[n].body.length));
+                k += dest_list[n].body.length;
+                b = false;
+            }
+        }
+        if (b) k++;
+    }
+    return res;
+  }
+
+  this.substitute=function(source, dest){
+    return this.substitute_parallel([source],[dest]);
+  }
 
 }
