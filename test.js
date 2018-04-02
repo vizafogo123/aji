@@ -1,15 +1,5 @@
-var test_no = 0;
-
-IN = new Operation(10, 2, "%1 \\in %2", "equals", Operation.RELATION);
-A = new Operation("var1", 0, "a", "a", Operation.VARIABLE);
-B = new Operation("var2", 0, "b", "b", Operation.VARIABLE);
-C = new Operation("var3", 0, "c", "c", Operation.VARIABLE);
-D = new Operation("var4", 0, "d", "d", Operation.VARIABLE);
-EMPTY = new Operation(10, 0, "\\emptyset", "emptyset", Operation.EXPRESSION);
-POK = new Operation("pok", 2, "\\left( %1 \\otimes %2 \\right)", "pok", Operation.EXPRESSION);
-Operation.builtin_operations = Operation.builtin_operations.concat([IN, A, B, C,EMPTY,POK]);
-
 (function() {
+  var test_no = 0;
   var assert = function(boo) {
     test_no++;
     if (!boo) console.error("opkop " + test_no);

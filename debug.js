@@ -1,0 +1,10 @@
+IN = new Operation(10, 2, "%1 \\in %2", "equals", Operation.RELATION);
+A = new Operation("var1", 0, "a", "a", Operation.VARIABLE);
+B = new Operation("var2", 0, "b", "b", Operation.VARIABLE);
+C = new Operation("var3", 0, "c", "c", Operation.VARIABLE);
+D = new Operation("var4", 0, "d", "d", Operation.VARIABLE);
+EMPTY = new Operation(10, 0, "\\emptyset", "emptyset", Operation.EXPRESSION);
+POK = new Operation("pok", 2, "\\left( %1 \\otimes %2 \\right)", "pok", Operation.EXPRESSION);
+REL1 = new Operation("rel1", 0, "\\phi", "b", Operation.RELATION);
+REL2 = new Operation("rel2", 0, "\\psi", "b", Operation.RELATION);
+Operation.builtin_operations = Operation.builtin_operations.concat([IN, A, B, C,EMPTY,POK,REL1,REL2]);

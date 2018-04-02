@@ -2,6 +2,7 @@
   var fbuilder=document.getElementById('formula-builder');
   var bod = document.getElementById("formula-builder-body");
   var foot = document.getElementById("formula-builder-footer");
+  var mode='rel';
   var fbuilder_formula = new Formula([]);
 
   for (var i = 0; i < Operation.builtin_operations.length; i++) {
@@ -11,7 +12,7 @@
     bod.appendChild(img);
     img.addEventListener('click', (function(op) {
       return function(e) {
-        if (!fbuilder_formula.is_closed() && fbuilder_formula.op_addable(op, 'rel')) {
+        if (!fbuilder_formula.is_closed() && fbuilder_formula.op_addable(op, mode)) {
           fbuilder_formula.add_op(op);
           refresh();
         } else {
@@ -36,7 +37,7 @@
   button_done.id = "button-done";
   button_done.textContent = "done";
   button_done.onclick = function() {
-    after(fbuilder_formula);
+    after(fbuilder_formula.deepcopy());
     close();
 
   }
@@ -52,8 +53,9 @@
   }
   refresh();
 
-  fbuilder_show = function(a) {
+  fbuilder_show = function(a,mod='rel') {
     fbuilder.style.display = "block";
+    mode=mod;
     after = a;
   }
 
