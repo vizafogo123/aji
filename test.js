@@ -17,6 +17,10 @@
 
   assert(a.to_latex() === "\\forall \\Box : \\, \\Box = \\Box")
 
+  a = new Formula([NOT,NOT,A,B,NOT,NOT,NOT,NOT,NOT,B,NOT,NOT,C]);
+  assert(a.body.length===5);
+  a = new Formula([NOT,NOT,A,B,NOT,NOT,NOT,NOT,NOT,B,NOT,NOT,C]);
+  assert(a.body.length===5);
 
 
   a = new Formula([FORALL, PLACEHOLDER, EQUI, IN, PLACEHOLDER, PLACEHOLDER, EQUALS, PLACEHOLDER, PLACEHOLDER])

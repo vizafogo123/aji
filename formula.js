@@ -13,6 +13,16 @@ var array_equal = function(a, b) {
 function Formula(body) {
   this.body = body;
 
+  this.remove_double_neg=function() {
+    for (var i = 0; i < this.body.length - 1; i++) {
+      if (this.body[i] === NOT && this.body[i + 1] === NOT) {
+        this.body = this.body.slice(0, i).concat(this.body.slice(i + 2));
+      }
+    }
+  }
+
+  this.remove_double_neg();
+
   this.deepcopy = function() {
     return new Formula(this.body.slice());
   }
@@ -108,7 +118,9 @@ function Formula(body) {
   }
 
   this.add_op = function(op) {
-    this.body.push(op);
+    if (this.body.length>0 && op===NOT && this.body[this.body.length-1]===NOT){
+      this.body.pop();
+    } else this.body.push(op);
   }
 
   this.fill_with_placeholders = function() {
