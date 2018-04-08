@@ -1,6 +1,11 @@
 Proof = (function() {
   var list = [];
 
+  var add_formula = function(f) {
+    add_element(f,list.length);
+    list.push(f);
+  }
+
   var click_formula = function(n) {
     if (list[n].body[0] === FORALL) {
       fbuilder_show(function(f) {
@@ -9,7 +14,7 @@ Proof = (function() {
     } else if (list[n].body[0] === AND) {
       add_formula(new Formula(list[n].body.slice(1, list[n].start_of_child(0, 2))));
       add_formula(new Formula(list[n].body.slice(list[n].start_of_child(0, 2))));
-      remove_formula(n);
+      remove(n);
     } else if (list[n].body[0] === NOT) {
       if (list[n].body[1] === AND) {
         add_formula(new Formula([OR, NOT].concat(list[n].body.slice(2, list[n].start_of_child(1, 2)))
@@ -34,24 +39,19 @@ Proof = (function() {
       add_formula(new Formula([AND].concat(list[a].body).concat(list[b].body)));
   }
 
-  var insert = function(f) {
-    list.push(f);
-    return list.length - 1;
-  }
 
   var remove = function(id) {
     var index = Object.keys(list).findIndex(function(x) {
       return x == id
     });
+    remove_element(index);
     delete list[id];
-    return index;
   }
 
   return {
     click_formula: click_formula,
     drag_drop_formula:drag_drop_formula,
-    insert: insert,
-    remove: remove
+    add_formula: add_formula //aspo
   }
 
 })()
