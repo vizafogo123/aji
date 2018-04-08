@@ -1,9 +1,25 @@
 Proof = (function() {
-  var list = [];
+   list = [];
+
+  var id_to_index=function(id){
+    return Object.keys(list).findIndex(function(x) {
+      return x == id
+    });
+  }
 
   var add_formula = function(f) {
-    add_element(f,list.length);
+    add_element(f, list.length);
     list.push(f);
+  }
+
+  var remove_formula = function(id) {
+    remove_element(id_to_index(id));
+    delete list[id];
+  }
+
+  var modify_formula=function(id,f){
+    list[id]=f;
+    modify_element(id_to_index(id),f);
   }
 
   var click_formula = function(n) {
@@ -14,43 +30,76 @@ Proof = (function() {
     } else if (list[n].body[0] === AND) {
       add_formula(new Formula(list[n].body.slice(1, list[n].start_of_child(0, 2))));
       add_formula(new Formula(list[n].body.slice(list[n].start_of_child(0, 2))));
-      remove(n);
+      remove_formula(n);
     } else if (list[n].body[0] === NOT) {
       if (list[n].body[1] === AND) {
-        add_formula(new Formula([OR, NOT].concat(list[n].body.slice(2, list[n].start_of_child(1, 2)))
+        modify_formula(n,new Formula([OR, NOT].concat(list[n].body.slice(2, list[n].start_of_child(1, 2)))
           .concat([NOT]).concat(list[n].body.slice(list[n].start_of_child(1, 2)))));
       } else if (list[n].body[1] === OR) {
-        add_formula(new Formula([AND, NOT].concat(list[n].body.slice(2, list[n].start_of_child(1, 2)))
+        modify_formula(n,new Formula([AND, NOT].concat(list[n].body.slice(2, list[n].start_of_child(1, 2)))
           .concat([NOT]).concat(list[n].body.slice(list[n].start_of_child(1, 2)))));
       } else if (list[n].body[1] === IF) {
-        add_formula(new Formula([AND].concat(list[n].body.slice(2, list[n].start_of_child(1, 2)))
+        modify_formula(n,new Formula([AND].concat(list[n].body.slice(2, list[n].start_of_child(1, 2)))
           .concat([NOT]).concat(list[n].body.slice(list[n].start_of_child(1, 2)))));
       } else if (list[n].body[1] === FORALL) {
-        add_formula(new Formula([EXISTS, list[n].body[2], NOT].concat(list[n].body.slice(3))));
+        modify_formula(n,new Formula([EXISTS, list[n].body[2], NOT].concat(list[n].body.slice(3))));
       } else if (list[n].body[1] === EXISTS) {
-        add_formula(new Formula([FORALL, list[n].body[2], NOT].concat(list[n].body.slice(3))));
+        modify_formula(n,new Formula([FORALL, list[n].body[2], NOT].concat(list[n].body.slice(3))));
       }
-
     }
   }
 
   var drag_drop_formula = function(a, b) {
-    if (a != b)
-      add_formula(new Formula([AND].concat(list[a].body).concat(list[b].body)));
+    if (a === b) return;
+    if (list[a].body.length>list[b].body.length) {
+      deduction(a,b);
+    }
+    if (list[b].body.length>list[a].body.length) {
+      deduction(b,a);
+    }
   }
 
+  var deduction=function(a,b){
+    //console.log(list[a],list[b]);
+    if (list[a].body[0]===IF){
+      if (array_equal(list[a].body.slice(1,list[a].start_of_child(0, 2)),list[b].body)){
+        add_formula(new Formula(list[a].body.slice(list[a].start_of_child(0, 2))));
+      }
+      if (array_equal(list[a].body.slice(list[a].start_of_child(0, 2)),list[b].negation().body)){
+        add_formula(new Formula([NOT].concat(list[a].body.slice(1,list[a].start_of_child(0, 2)))));
+      }
+    }
 
-  var remove = function(id) {
-    var index = Object.keys(list).findIndex(function(x) {
-      return x == id
-    });
-    remove_element(index);
-    delete list[id];
+    if (list[a].body[0]===OR){
+      if (array_equal(list[a].body.slice(1,list[a].start_of_child(0, 2)),list[b].negation().body)){
+        add_formula(new Formula(list[a].body.slice(list[a].start_of_child(0, 2))));
+      }
+      if (array_equal(list[a].body.slice(list[a].start_of_child(0, 2)),list[b].negation().body)){
+        add_formula(new Formula(list[a].body.slice(1,list[a].start_of_child(0, 2))));
+      }
+    }
+
+    if (list[a].body[0]===EQUI){
+      if (array_equal(list[a].body.slice(1,list[a].start_of_child(0, 2)),list[b].body)){
+        add_formula(new Formula(list[a].body.slice(list[a].start_of_child(0, 2))));
+      }
+      if (array_equal(list[a].body.slice(list[a].start_of_child(0, 2)),list[b].body)){
+        add_formula(new Formula(list[a].body.slice(1,list[a].start_of_child(0, 2))));
+      }
+      if (array_equal(list[a].body.slice(1,list[a].start_of_child(0, 2)),list[b].negation().body)){
+        add_formula(new Formula([NOT].concat(list[a].body.slice(list[a].start_of_child(0, 2)))));
+      }
+      if (array_equal(list[a].body.slice(list[a].start_of_child(0, 2)),list[b].negation().body)){
+        add_formula(new Formula([NOT].concat(list[a].body.slice(1,list[a].start_of_child(0, 2)))));
+      }
+    }
+
   }
+
 
   return {
     click_formula: click_formula,
-    drag_drop_formula:drag_drop_formula,
+    drag_drop_formula: drag_drop_formula,
     add_formula: add_formula //aspo
   }
 

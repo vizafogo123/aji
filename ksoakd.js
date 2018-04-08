@@ -43,3 +43,7 @@ remove_element = function(index) {
   var li = document.querySelectorAll("ul li")[index];
   li.parentNode.removeChild(li);
 }
+
+modify_element=function(index,f){
+  document.querySelectorAll("ul li img")[index].src=imgsrc_from_formula(f);
+}
