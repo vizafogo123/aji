@@ -7,7 +7,7 @@ document.body.appendChild(ul);
 ul.style = "list-style-type:none";
 
 
-add_element = function(f,id) {
+add_element = function(f,id,assumption=false) {
   var img = document.createElement("img");
   img.src = imgsrc_from_formula(f);
   var li = document.createElement("li");
@@ -36,6 +36,7 @@ add_element = function(f,id) {
     }
   })(id)
 
+  if (assumption) img.style.background="#a7f"
 }
 
 
