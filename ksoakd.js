@@ -1,4 +1,4 @@
-function displayMessage() {
+function cheat_add_formula() {
   fbuilder_show(Proof.add_formula)
 }
 

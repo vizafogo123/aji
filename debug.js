@@ -7,4 +7,5 @@ EMPTY = new Operation(10, 0, "\\emptyset", "emptyset", Operation.EXPRESSION);
 POK = new Operation("pok", 2, "\\left( %1 \\otimes %2 \\right)", "pok", Operation.EXPRESSION);
 REL1 = new Operation("rel1", 0, "\\phi", "b", Operation.RELATION);
 REL2 = new Operation("rel2", 0, "\\psi", "b", Operation.RELATION);
-Operation.builtin_operations = Operation.builtin_operations.concat([IN, A, B, C,EMPTY,POK,REL1,REL2]);
+REL3 = new Operation("rel2", 0, "\\gamma", "b", Operation.RELATION);
+Operation.builtin_operations = Operation.builtin_operations.concat([IN, A, B, C,EMPTY,POK,REL1,REL2,REL3]);
