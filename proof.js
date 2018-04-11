@@ -2,7 +2,6 @@ Proof = (function() {
   list = [];
 
   var id_to_index = function(id) {
-    console.log("id_to_index");
     return Object.keys(list).findIndex(function(x) {
       return x == id
     });
@@ -35,22 +34,51 @@ Proof = (function() {
       return true;
     }
     var f = list[n].formula;
+    var add_or_modify = (list[n].assumption ? add_formula : function(f) {
+      modify_formula(n, f)
+    });
+
+    var get_new_op = function() {
+      var variable, identifier = "local" + Operation.local_operations.length,
+        tries = [f.body[1].print_scheme, "a", "b", "c", "d", "e", "f", "g", "h"],
+        op = new Operation(identifier, 0, "", Operation.EXPRESSION),
+        schemes = Operation.local_operations.map(function(x) {
+          return x.print_scheme
+        });
+      if (!schemes.includes(tries[0])) {
+        op.print_scheme = tries[0];
+      } else {
+        schemes = schemes.concat(f.body.map(function(x) {
+          return x.print_scheme
+        }));
+        var i = 1;
+        while (schemes.includes(tries[i])) i++;
+        op.print_scheme = tries[i];
+      };
+      return op;
+    }
+
     if (f.body[0] === FORALL) {
-      fbuilder_show(function(f) {
-        add_formula((new Formula(f.body.slice(2))).substitute(new Formula([f.body[1]]), f))
+      FormulaBuilder.show(function(x) {
+        add_formula((new Formula(f.body.slice(2))).substitute(new Formula([f.body[1]]), x))
       }, 'exp')
+    } else if (f.body[0] === EXISTS) {
+      var op = get_new_op();
+      Operation.local_operations.push(op);
+      add_or_modify(new Formula(f.body.slice(2)).substitute(new Formula([f.body[1]]), new Formula([op])));
     } else if (f.body[0] === AND) {
       add_formula(new Formula(f.body.slice(1, f.start_of_child(0, 2))));
       add_formula(new Formula(f.body.slice(f.start_of_child(0, 2))));
+      if (!list[n].assumption && in_top_assumption(n)) remove_formula(n);
+    } else if (f.body[0] === EQUI) {
+      add_formula(new Formula([IF].concat(f.body.slice(1))));
+      add_formula(new Formula([IF].concat(f.body.slice(f.start_of_child(0, 2))).concat(f.body.slice(1, f.start_of_child(0, 2)))));
       if (!list[n].assumption && in_top_assumption(n)) remove_formula(n);
     } else if (f.body[0] === IF) {
       add_formula(new Formula([NOT].concat(f.body.slice(1, f.start_of_child(0, 2)))), ass = true);
     } else if (f.body[0] === OR) {
       add_formula(new Formula(f.body.slice(1, f.start_of_child(0, 2))), ass = true);
     } else if (f.body[0] === NOT) {
-      var add_or_modify = (list[n].assumption ? add_formula : function(f) {
-        modify_formula(n, f)
-      });
       if (f.body[1] === AND) {
         add_or_modify(new Formula([OR, NOT].concat(f.body.slice(2, f.start_of_child(1, 2)))
           .concat([NOT]).concat(f.body.slice(f.start_of_child(1, 2)))));
@@ -60,6 +88,8 @@ Proof = (function() {
       } else if (f.body[1] === IF) {
         add_or_modify(new Formula([AND].concat(f.body.slice(2, f.start_of_child(1, 2)))
           .concat([NOT]).concat(f.body.slice(f.start_of_child(1, 2)))));
+      } else if (f.body[1] === EQUI) {
+        add_or_modify(new Formula([EQUI, NOT].concat(f.body.slice(2))));
       } else if (f.body[1] === FORALL) {
         add_or_modify(new Formula([EXISTS, f.body[2], NOT].concat(f.body.slice(3))));
       } else if (f.body[1] === EXISTS) {
@@ -90,7 +120,7 @@ Proof = (function() {
     var a_higher_than_b = function() {
       if (a > b) return true;
       var ids = Object.keys(list);
-      var maxi=id_to_index(b);
+      var maxi = id_to_index(b);
       for (var i = id_to_index(a); i <= maxi; i++) {
         if (list[ids[i]].assumption) return false;
       }
@@ -146,7 +176,7 @@ Proof = (function() {
   }
 
   var make_assumption = function() {
-    fbuilder_show(function(f) {
+    FormulaBuilder.show(function(f) {
       add_formula(f, ass = true)
     }, 'rel')
   }
@@ -171,6 +201,7 @@ Proof = (function() {
     add_formula: add_formula, //debug
     list: list, //debug
     contradiction: contradiction, //debug
+    deduction:deduction, //debug
     make_assumption: make_assumption
   }
 

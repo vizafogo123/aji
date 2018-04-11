@@ -1,5 +1,5 @@
 function cheat_add_formula() {
-  fbuilder_show(Proof.add_formula)
+  FormulaBuilder.show(Proof.add_formula)
 }
 
 ul = document.createElement("ul");

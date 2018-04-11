@@ -28,7 +28,7 @@ function Formula(body) {
   }
 
   this.negation = function() {
-    if (body[0] === NOT) {
+    if (this.body[0] === NOT) {
       return new Formula(this.body.slice(1))
     } else {
       return new Formula([NOT].concat(this.body))
