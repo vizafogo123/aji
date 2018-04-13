@@ -3,12 +3,22 @@
 <head>
    <meta charset="UTF-8">
    <link rel="stylesheet" type="text/css" href="asjio.css">
+   <script type="text/x-mathjax-config">
+       MathJax.Hub.Config({
+           //extensions: ["tex2jax.js", "TeX/AMSmath.js"],
+           jax: ["input/TeX", "output/SVG"],
+           SVG: {
+              scale: 120
+           }
+       })
+   </script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>
 </head>
   <body>
       <input type="button" value="Cheat add" onclick="cheat_add_formula();" />
       <input type="button" value="Assumption" onclick="Proof.make_assumption();" />
+
       <div id="messageText"></div>
-      <p id="sajio">Aosjkp dsoja</p>
       <div id="formula-builder">
 
         <!-- Modal content -->

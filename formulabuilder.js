@@ -48,9 +48,14 @@ FormulaBuilder=(function() {
     close();
   }
 
+  var p = document.createElement("p");
+  foot.appendChild(p);
+  p.innerHTML="oijoij iojiojio uihuihui"
   var refresh = function() {
     img_result.src = imgsrc_from_formula(fbuilder_formula.deepcopy().fill_with_placeholders());
     button_done.disabled = !fbuilder_formula.is_closed();
+    p.innerHTML="\\( "+fbuilder_formula.deepcopy().fill_with_placeholders().to_latex()+" \\)";
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
   }
   refresh();
 

@@ -8,7 +8,7 @@ Proof = (function() {
   }
 
   var add_formula = function(f, ass = false) {
-    add_element(f, list.length, ass);
+    FormulaPane.add_element(f, list.length, ass);
     list.push({
       formula: f,
       assumption: ass
@@ -16,13 +16,13 @@ Proof = (function() {
   }
 
   var remove_formula = function(id) {
-    remove_element(id_to_index(id));
+    FormulaPane.remove_element(id_to_index(id));
     delete list[id];
   }
 
   var modify_formula = function(id, f) {
     list[id].formula = f;
-    modify_element(id_to_index(id), f);
+    FormulaPane.modify_element(id_to_index(id), f);
   }
 
   var click_formula = function(n) {
