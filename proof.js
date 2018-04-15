@@ -66,6 +66,7 @@ Proof = (function() {
       var op = get_new_op();
       Operation.local_operations.push(op);
       add_or_modify(new Formula(f.body.slice(2)).substitute(new Formula([f.body[1]]), new Formula([op])));
+      FormulaBuilder.refresh_locals();
     } else if (f.body[0] === AND) {
       add_formula(new Formula(f.body.slice(1, f.start_of_child(0, 2))));
       add_formula(new Formula(f.body.slice(f.start_of_child(0, 2))));

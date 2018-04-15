@@ -1,47 +1,62 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-   <meta charset="UTF-8">
-   <link rel="stylesheet" type="text/css" href="asjio.css">
-   <script type="text/x-mathjax-config">
-       MathJax.Hub.Config({
-           //extensions: ["tex2jax.js", "TeX/AMSmath.js"],
-           jax: ["input/TeX", "output/SVG"],
-           SVG: {
-              scale: 120
-           }
-       })
-   </script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="asjio.css">
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ jax: ["input/TeX", "output/SVG"], SVG: { scale: 120 } })
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"></script>
 </head>
-  <body>
-      <input type="button" value="Cheat add" onclick="cheat_add_formula();" />
-      <input type="button" value="Assumption" onclick="Proof.make_assumption();" />
 
-      <div id="messageText"></div>
-      <div id="formula-builder">
+<body>
+  <input type="button" value="Cheat add" onclick="cheat_add_formula();" />
+  <input type="button" value="Assumption" onclick="Proof.make_assumption();" />
 
-        <!-- Modal content -->
-        <div id="formula-builder-content">
-          <div id="formula-builder-header">
-            <span class="close">&times;</span>
-            <h2>Modal Header</h2>
-          </div>
-          <div id="formula-builder-body">
-          </div>
-          <div id="formula-builder-footer">
-            <h3>Modal Footer</h3>
-          </div>
+  <div id="formula-builder">
+    <div id="formula-builder-content">
+      <div id="formula-builder-header">
+        <span class="close">×</span>
+        <h2>Formula builder</h2>
+      </div>
+      <div id="formula-builder-body">
+        <div id="a">globals</div>
+        <div id="b">localsasd</div>
+        <div id="log">
+          <h1>logicals</h1>
         </div>
+        <div id="qua">
+          <h1>quantors</h1>
+        </div>
+        <div id="rel">
+          <h1>relations</h1>
+        </div>
+        <div id="exp">
+          <h1>expressions</h1>
+        </div>
+        <div id="var">
+          <h1>variables</h1>
+        </div>
+        <div id="loc">
+          <h1>locals</h1>
+        </div>
+      </div>
+      <div id="formula-builder-footer">
+        <img id="img-result" src="http://latex.codecogs.com/svg.latex?\Box">
+        <button id="button-clear" disabled="">clear</button>
+        <button id="button-backspace" disabled="">backspace</button>
+        <button id="button-done" disabled="">done</button>
+      </div>
+    </div>
 
-  </div>
+</body>
+<script src="sas.js"></script>
+<script src="formula.js"></script>
+<script src="proof.js"></script>
+<script src="debug.js"></script>
+<script src="formulabuilder.js"></script>
+<script src="ksoakd.js"></script>
+<script src="test.js"></script>
 
-  </body>
-  <script src="sas.js"></script>
-  <script src="formula.js"></script>
-  <script src="proof.js"></script>
-  <script src="debug.js"></script>
-  <script src="formulabuilder.js"></script>
-  <script src="ksoakd.js"></script>
-  <script src="test.js"></script>
 </html>

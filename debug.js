@@ -8,5 +8,5 @@ REL1 = new Operation("rel1", 0, "\\phi", Operation.RELATION);
 REL2 = new Operation("rel2", 0, "\\psi", Operation.RELATION);
 REL3 = new Operation("rel2", 0, "\\gamma", Operation.RELATION);
 Operation.builtin_operations = Operation.builtin_operations.concat([A, B, C]);
-Operation.global_operations=[EMPTY,IN];
-Operation.local_operations=[POK,REL1,REL2,REL3];
+Operation.global_operations = [EMPTY, IN, POK, REL1, REL2, REL3];
+Operation.local_operations = [];
