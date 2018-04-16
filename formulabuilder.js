@@ -42,7 +42,7 @@ FormulaBuilder = (function() {
       i;
     for (i = 0; i < k - 1; i++) loc.removeChild(loc.lastChild);
 
-    for (var i = 0; i < Operation.local_operations.length; i++) {
+    for (var i in Operation.local_operations) {
       add_op(Operation.local_operations[i], local = true);
     }
   }

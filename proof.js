@@ -1,5 +1,6 @@
 Proof = (function() {
-  list = [];
+  var list = [];
+  var max = 0;
 
   var id_to_index = function(id) {
     return Object.keys(list).findIndex(function(x) {
@@ -8,16 +9,36 @@ Proof = (function() {
   }
 
   var add_formula = function(f, ass = false) {
-    FormulaPane.add_element(f, list.length, ass);
-    list.push({
+    max += 1;
+    FormulaPane.add_element(f, max, ass);
+    list[max] = {
       formula: f,
       assumption: ass
-    });
+    };
+
   }
 
   var remove_formula = function(id) {
     FormulaPane.remove_element(id_to_index(id));
     delete list[id];
+  }
+
+  var remove_unused_locals = function() {
+    var changed = false;
+    for (var i in Operation.local_operations) {
+      var b = true;
+      for (var id in list) {
+        if (list[id].formula.body.includes(Operation.local_operations[i])) {
+          b = false;
+          break;
+        };
+      }
+      if (b) {
+        delete Operation.local_operations[i];
+        changed = true;
+      }
+    }
+    if (changed) FormulaBuilder.refresh_locals();
   }
 
   var modify_formula = function(id, f) {
@@ -95,7 +116,13 @@ Proof = (function() {
         add_or_modify(new Formula([EXISTS, f.body[2], NOT].concat(f.body.slice(3))));
       } else if (f.body[1] === EXISTS) {
         add_or_modify(new Formula([FORALL, f.body[2], NOT].concat(f.body.slice(3))));
+      } else if (f.body[1] === EQUALS) {
+        if(array_equal(f.body.slice(f.start_of_child(1, 2)),f.body.slice(2, f.start_of_child(1, 2)))) {
+          contradiction();
+        }
       }
+    } else if (f.body[0] === EQUALS) {
+      add_or_modify(new Formula([EQUALS].concat(f.body.slice(f.start_of_child(0, 2))).concat(f.body.slice(1, f.start_of_child(0, 2)))));
     }
   }
 
@@ -183,16 +210,16 @@ Proof = (function() {
   }
 
   var contradiction = function() {
-    var f, ids = Object.keys(list);
-    for (var i = ids.length - 1; i >= 0; i--) {
+    var f, i, ids = Object.keys(list);
+    for (i = ids.length - 1; i >= 0; i--) {
       if (list[ids[i]].assumption) {
         f = list[ids[i]].formula.negation();
         remove_formula(ids[i]);
         i = -1;
       } else remove_formula(ids[i]);
-
     }
     add_formula(f);
+    remove_unused_locals();
   }
 
 
@@ -202,7 +229,9 @@ Proof = (function() {
     add_formula: add_formula, //debug
     list: list, //debug
     contradiction: contradiction, //debug
-    deduction:deduction, //debug
+    deduction: deduction, //debug
+    remove_unused_locals: remove_unused_locals, //debug
+    remove_formula: remove_formula, //debug
     make_assumption: make_assumption
   }
 
