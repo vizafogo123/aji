@@ -117,7 +117,7 @@ Proof = (function() {
       } else if (f.body[1] === EXISTS) {
         add_or_modify(new Formula([FORALL, f.body[2], NOT].concat(f.body.slice(3))));
       } else if (f.body[1] === EQUALS) {
-        if(array_equal(f.body.slice(f.start_of_child(1, 2)),f.body.slice(2, f.start_of_child(1, 2)))) {
+        if (array_equal(f.body.slice(f.start_of_child(1, 2)), f.body.slice(2, f.start_of_child(1, 2)))) {
           contradiction();
         }
       }
@@ -139,6 +139,17 @@ Proof = (function() {
     if (array_equal(f1.negation().body, f2.body)) {
       contradiction();
       return;
+    }
+    if (f1.body[0] === EQUALS) {
+      var res1 = f2.substitute(new Formula(f1.first_child(0)),new Formula(f1.second_child(0)));
+      if (!array_equal(res1.body, f2.body)) {
+        add_formula(res1);
+      } else {
+        var res2 = f2.substitute(new Formula(f1.second_child(0)),new Formula(f1.first_child(0)));
+        if (!array_equal(res2.body, f2.body)) {
+          add_formula(res2);
+        }
+      }
     }
   }
 

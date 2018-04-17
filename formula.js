@@ -159,4 +159,11 @@ function Formula(body) {
     return this.substitute_parallel([source], [dest]);
   }
 
+  this.first_child=function(k){
+    return this.body.slice(k+1, this.start_of_child(k, 2));
+  }
+  this.second_child=function(k){  //if last
+    return this.body.slice(this.start_of_child(k, 2));
+  }
+
 }
