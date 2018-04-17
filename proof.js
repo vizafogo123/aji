@@ -89,27 +89,24 @@ Proof = (function() {
       add_or_modify(new Formula(f.body.slice(2)).substitute(new Formula([f.body[1]]), new Formula([op])));
       FormulaBuilder.refresh_locals();
     } else if (f.body[0] === AND) {
-      add_formula(new Formula(f.body.slice(1, f.start_of_child(0, 2))));
-      add_formula(new Formula(f.body.slice(f.start_of_child(0, 2))));
+      add_formula(new Formula(f.first_child(0)));
+      add_formula(new Formula(f.second_child(0)));
       if (!list[n].assumption && in_top_assumption(n)) remove_formula(n);
     } else if (f.body[0] === EQUI) {
       add_formula(new Formula([IF].concat(f.body.slice(1))));
-      add_formula(new Formula([IF].concat(f.body.slice(f.start_of_child(0, 2))).concat(f.body.slice(1, f.start_of_child(0, 2)))));
+      add_formula(new Formula([IF].concat(f.second_child(0)).concat(f.first_child(0))));
       if (!list[n].assumption && in_top_assumption(n)) remove_formula(n);
     } else if (f.body[0] === IF) {
-      add_formula(new Formula([NOT].concat(f.body.slice(1, f.start_of_child(0, 2)))), ass = true);
+      add_formula(new Formula([NOT].concat(f.first_child(0))), ass = true);
     } else if (f.body[0] === OR) {
-      add_formula(new Formula(f.body.slice(1, f.start_of_child(0, 2))), ass = true);
+      add_formula(new Formula(f.first_child(0)), ass = true);
     } else if (f.body[0] === NOT) {
       if (f.body[1] === AND) {
-        add_or_modify(new Formula([OR, NOT].concat(f.body.slice(2, f.start_of_child(1, 2)))
-          .concat([NOT]).concat(f.body.slice(f.start_of_child(1, 2)))));
+        add_or_modify(new Formula([OR, NOT].concat(f.first_child(1)).concat([NOT]).concat(f.second_child(1))));
       } else if (f.body[1] === OR) {
-        add_or_modify(new Formula([AND, NOT].concat(f.body.slice(2, f.start_of_child(1, 2)))
-          .concat([NOT]).concat(f.body.slice(f.start_of_child(1, 2)))));
+        add_or_modify(new Formula([AND, NOT].concat(f.first_child(1)).concat([NOT]).concat(f.second_child(1))));
       } else if (f.body[1] === IF) {
-        add_or_modify(new Formula([AND].concat(f.body.slice(2, f.start_of_child(1, 2)))
-          .concat([NOT]).concat(f.body.slice(f.start_of_child(1, 2)))));
+        add_or_modify(new Formula([AND].concat(f.first_child(1)).concat([NOT]).concat(f.second_child(1))));
       } else if (f.body[1] === EQUI) {
         add_or_modify(new Formula([EQUI, NOT].concat(f.body.slice(2))));
       } else if (f.body[1] === FORALL) {
@@ -117,12 +114,12 @@ Proof = (function() {
       } else if (f.body[1] === EXISTS) {
         add_or_modify(new Formula([FORALL, f.body[2], NOT].concat(f.body.slice(3))));
       } else if (f.body[1] === EQUALS) {
-        if (array_equal(f.body.slice(f.start_of_child(1, 2)), f.body.slice(2, f.start_of_child(1, 2)))) {
+        if (array_equal(f.second_child(1), f.first_child(1))) {
           contradiction();
         }
       }
     } else if (f.body[0] === EQUALS) {
-      add_or_modify(new Formula([EQUALS].concat(f.body.slice(f.start_of_child(0, 2))).concat(f.body.slice(1, f.start_of_child(0, 2)))));
+      add_or_modify(new Formula([EQUALS].concat(f.second_child(0)).concat(f.first_child(0))));
     }
   }
 
@@ -141,11 +138,11 @@ Proof = (function() {
       return;
     }
     if (f1.body[0] === EQUALS) {
-      var res1 = f2.substitute(new Formula(f1.first_child(0)),new Formula(f1.second_child(0)));
+      var res1 = f2.substitute(new Formula(f1.first_child(0)), new Formula(f1.second_child(0)));
       if (!array_equal(res1.body, f2.body)) {
         add_formula(res1);
       } else {
-        var res2 = f2.substitute(new Formula(f1.second_child(0)),new Formula(f1.first_child(0)));
+        var res2 = f2.substitute(new Formula(f1.second_child(0)), new Formula(f1.first_child(0)));
         if (!array_equal(res2.body, f2.body)) {
           add_formula(res2);
         }
@@ -172,42 +169,42 @@ Proof = (function() {
     };
 
     if (f1.body[0] === IF) {
-      if (array_equal(f1.body.slice(1, f1.start_of_child(0, 2)), f2.body)) {
-        (add_or_modify())(new Formula(f1.body.slice(f1.start_of_child(0, 2))));
+      if (array_equal(f1.first_child(0), f2.body)) {
+        (add_or_modify())(new Formula(f1.second_child(0)));
         return true;
       }
-      if (array_equal(f1.body.slice(f1.start_of_child(0, 2)), f2.negation().body)) {
-        (add_or_modify())(new Formula([NOT].concat(f1.body.slice(1, f1.start_of_child(0, 2)))));
+      if (array_equal(f1.second_child(0), f2.negation().body)) {
+        (add_or_modify())(new Formula([NOT].concat(f1.first_child(0))));
         return true;
       }
     }
 
     if (f1.body[0] === OR) {
-      if (array_equal(f1.body.slice(1, f1.start_of_child(0, 2)), f2.negation().body)) {
-        (add_or_modify())(new Formula(f1.body.slice(f1.start_of_child(0, 2))));
+      if (array_equal(f1.first_child(0), f2.negation().body)) {
+        (add_or_modify())(new Formula(f1.second_child(0)));
         return true;
       }
-      if (array_equal(f1.body.slice(f1.start_of_child(0, 2)), f2.negation().body)) {
-        (add_or_modify())(new Formula(f1.body.slice(1, f1.start_of_child(0, 2))));
+      if (array_equal(f1.second_child(0), f2.negation().body)) {
+        (add_or_modify())(new Formula(f1.first_child(0)));
         return true;
       }
     }
 
     if (f1.body[0] === EQUI) {
-      if (array_equal(f1.body.slice(1, f1.start_of_child(0, 2)), f2.body)) {
-        (add_or_modify())(new Formula(f1.body.slice(f1.start_of_child(0, 2))));
+      if (array_equal(f1.first_child(0), f2.body)) {
+        (add_or_modify())(new Formula(f1.second_child(0)));
         return true;
       }
-      if (array_equal(f1.body.slice(f1.start_of_child(0, 2)), f2.body)) {
-        (add_or_modify())(new Formula(f1.body.slice(1, f1.start_of_child(0, 2))));
+      if (array_equal(f1.second_child(0), f2.body)) {
+        (add_or_modify())(new Formula(f1.first_child(0)));
         return true;
       }
-      if (array_equal(f1.body.slice(1, f1.start_of_child(0, 2)), f2.negation().body)) {
-        (add_or_modify())(new Formula([NOT].concat(f1.body.slice(f1.start_of_child(0, 2)))));
+      if (array_equal(f1.first_child(0), f2.negation().body)) {
+        (add_or_modify())(new Formula([NOT].concat(f1.second_child(0))));
         return true;
       }
-      if (array_equal(f1.body.slice(f1.start_of_child(0, 2)), f2.negation().body)) {
-        (add_or_modify())(new Formula([NOT].concat(f1.body.slice(1, f1.start_of_child(0, 2)))));
+      if (array_equal(f1.second_child(0), f2.negation().body)) {
+        (add_or_modify())(new Formula([NOT].concat(f1.first_child(0))));
         return true;
       }
     }
