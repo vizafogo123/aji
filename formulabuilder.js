@@ -45,6 +45,7 @@ FormulaBuilder = (function() {
     for (var i in Operation.local_operations) {
       add_op(Operation.local_operations[i], local = true);
     }
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
   refresh_locals();
 

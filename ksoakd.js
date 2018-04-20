@@ -8,8 +8,8 @@ ul.style = "list-style-type:none";
 
 FormulaPane=(function(){
   var add_element = function(f,id,assumption=false) {
-    var img = document.createElement("img");
-    img.src = imgsrc_from_formula(f);
+    var img = document.createElement("article");
+    img.innerHTML = html_from_formula(f);
     var li = document.createElement("li");
     ul.appendChild(li);
     li.appendChild(img);
@@ -18,7 +18,7 @@ FormulaPane=(function(){
         Proof.click_formula(n)
       }
     })(id)
-
+    img.draggable=true;
     img.ondrop = (function(n) {
       return function(event) {
         event.preventDefault();
@@ -37,6 +37,7 @@ FormulaPane=(function(){
     })(id)
 
     if (assumption) img.style.background="#a7f"
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
 
 
@@ -46,7 +47,8 @@ FormulaPane=(function(){
   }
 
   var modify_element=function(index,f){
-    document.querySelectorAll("ul li img")[index].src=imgsrc_from_formula(f);
+    document.querySelectorAll("ul li article")[index].innerHTML=html_from_formula(f);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
 
   return {

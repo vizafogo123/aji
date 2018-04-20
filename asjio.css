@@ -175,19 +175,20 @@ h1 {
   text-align: center;
 }
 
-ul img {
+ul article {
   height: 20px;
   width: 100%;
   padding: 5px;
+  text-align: center;
 }
 
-ul img:hover {
+ul article:hover {
   cursor: pointer;
   background: #ffc6ac;
   outline: 2px solid #002a32;
 }
 
-ul img:active {
+ul article:active {
   cursor: grabbing;
 }
 
