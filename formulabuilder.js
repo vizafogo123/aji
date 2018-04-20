@@ -6,10 +6,8 @@ FormulaBuilder = (function() {
   var fbuilder_formula = new Formula([]);
 
   var add_op = function(op, local = false) {
-    //var img = document.createElement("img");
-    //img.src = imgsrc_from_formula((new Formula([op])).fill_with_placeholders());
     var img = document.createElement("article");
-    img.innerHTML = "\\( " + (new Formula([op])).fill_with_placeholders().to_latex() + " \\)";
+    img.innerHTML = html_from_formula((new Formula([op])).fill_with_placeholders());
     var parent = (local ? document.getElementById("loc") :
       (op.type === Operation.QUANTOR ? document.getElementById("qua") :
         (op.type === Operation.LOGICAL ? document.getElementById("log") :
@@ -76,15 +74,12 @@ FormulaBuilder = (function() {
     close();
   }
 
-  var img_result = document.getElementById("img-result");
-  //var p = document.createElement("p");
-  //foot.appendChild(p);
+  var div_result = document.getElementById("result");
   var refresh = function() {
-    img_result.src = imgsrc_from_formula(fbuilder_formula.deepcopy().fill_with_placeholders());
+    div_result.innerHTML = html_from_formula(fbuilder_formula.deepcopy().fill_with_placeholders());
     button_done.disabled = !fbuilder_formula.is_closed();
     button_clear.disabled = fbuilder_formula.body.length === 0;
     button_backspace.disabled = fbuilder_formula.body.length === 0;
-    //p.innerHTML = "\\( " + fbuilder_formula.deepcopy().fill_with_placeholders().to_latex() + " \\)";
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
   refresh();

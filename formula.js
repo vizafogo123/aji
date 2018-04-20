@@ -2,6 +2,10 @@ function imgsrc_from_formula(f) {
   return "http://latex.codecogs.com/svg.latex?" + f.to_latex()
 }
 
+function html_from_formula(f){
+  return "\\( " + f.to_latex() + " \\)";
+}
+
 var array_equal = function(a, b) {
   if (a.length !== b.length) return false;
   for (var i = 0; i < a.length; i++) {
