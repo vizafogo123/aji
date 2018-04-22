@@ -124,7 +124,7 @@ Proof = (function() {
   }
 
   var drag_drop_formula = function(a, b) {
-    if (a === b) return;
+    if (a == b) return;
     var f1 = list[a].formula;
     var f2 = list[b].formula;
     if (f1.body.length > f2.body.length) {

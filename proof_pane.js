@@ -1,8 +1,8 @@
-ProofPane=(function(){
+ProofPane = (function() {
   var ul = document.createElement("ul");
   document.getElementById("proof-pane").appendChild(ul);
   ul.style = "list-style-type:none";
-  var add_element = function(f,id,assumption=false) {
+  var add_element = function(f, id, assumption = false) {
     var img = document.createElement("article");
     img.innerHTML = html_from_formula(f);
     var li = document.createElement("li");
@@ -13,7 +13,7 @@ ProofPane=(function(){
         Proof.click_formula(n)
       }
     })(id)
-    img.draggable=true;
+    img.draggable = true;
     img.ondrop = (function(n) {
       return function(event) {
         event.preventDefault();
@@ -31,7 +31,7 @@ ProofPane=(function(){
       }
     })(id)
 
-    if (assumption) img.style.background="#a7f"
+    if (assumption) img.style.background = "#a7f"
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
 
@@ -41,15 +41,37 @@ ProofPane=(function(){
     li.parentNode.removeChild(li);
   }
 
-  var modify_element=function(index,f){
-    document.querySelectorAll("ul li article")[index].innerHTML=html_from_formula(f);
+  var modify_element = function(index, f) {
+    document.querySelectorAll("ul li article")[index].innerHTML = html_from_formula(f);
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
 
   return {
-    add_element:add_element,
-    remove_element:remove_element,
-    modify_element:modify_element
+    add_element: add_element,
+    remove_element: remove_element,
+    modify_element: modify_element
+  }
+
+})();
+
+(function() {
+  var proof_pane = document.getElementById("proof-pane");
+  for (i in theorems) {
+    var ul = document.createElement("ul");
+    document.getElementById("theorem-pane").appendChild(ul);
+    ul.style = "list-style-type:none";
+    var img = document.createElement("article");
+    img.innerHTML = html_from_formula(theorems[i]);
+    var li = document.createElement("li");
+    ul.appendChild(li);
+    li.appendChild(img);
+    img.onclick = (function(fo) {
+      return function() {
+        Proof.add_formula(fo)
+      }
+    })(theorems[i])
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+
   }
 
 })()
