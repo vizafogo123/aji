@@ -1,3 +1,7 @@
+function cheat_add_formula() {
+  FormulaBuilder.show(Proof.add_formula)
+}
+
 A = new Operation("var1", 0, "a_0", Operation.VARIABLE);
 B = new Operation("var2", 0, "b_0", Operation.VARIABLE);
 C = new Operation("var3", 0, "c_0", Operation.VARIABLE);

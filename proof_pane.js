@@ -1,12 +1,7 @@
-function cheat_add_formula() {
-  FormulaBuilder.show(Proof.add_formula)
-}
-
-ul = document.createElement("ul");
-document.body.appendChild(ul);
-ul.style = "list-style-type:none";
-
-FormulaPane=(function(){
+ProofPane=(function(){
+  var ul = document.createElement("ul");
+  document.getElementById("proof-pane").appendChild(ul);
+  ul.style = "list-style-type:none";
   var add_element = function(f,id,assumption=false) {
     var img = document.createElement("article");
     img.innerHTML = html_from_formula(f);

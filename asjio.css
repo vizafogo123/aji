@@ -204,5 +204,13 @@ ul article:active {
   height: 25px;
 }
 
+#main {
+  display: grid;
+  grid-gap: 0px;
+  grid-template-columns: 50% 50%;
+  background: #c4a29e;
+}
+
+
 
 }

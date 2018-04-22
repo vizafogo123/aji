@@ -11,9 +11,14 @@
 </head>
 
 <body>
-  <input type="button" value="Cheat add" onclick="cheat_add_formula();" />
-  <input type="button" value="Assumption" onclick="Proof.make_assumption();" />
-
+  <div id="main">
+    <div id="proof-pane">
+      <input type="button" value="Cheat add" onclick="cheat_add_formula();" />
+      <input type="button" value="Assumption" onclick="Proof.make_assumption();" />
+    </div>
+    <div id="theorem-pane">
+    </div>
+  </div>
   <div id="formula-builder">
     <div id="formula-builder-content">
       <div id="formula-builder-header">

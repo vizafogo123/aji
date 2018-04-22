@@ -10,7 +10,7 @@ Proof = (function() {
 
   var add_formula = function(f, ass = false) {
     max += 1;
-    FormulaPane.add_element(f, max, ass);
+    ProofPane.add_element(f, max, ass);
     list[max] = {
       formula: f,
       assumption: ass
@@ -19,7 +19,7 @@ Proof = (function() {
   }
 
   var remove_formula = function(id) {
-    FormulaPane.remove_element(id_to_index(id));
+    ProofPane.remove_element(id_to_index(id));
     delete list[id];
   }
 
@@ -43,7 +43,7 @@ Proof = (function() {
 
   var modify_formula = function(id, f) {
     list[id].formula = f;
-    FormulaPane.modify_element(id_to_index(id), f);
+    ProofPane.modify_element(id_to_index(id), f);
   }
 
   var click_formula = function(n) {
