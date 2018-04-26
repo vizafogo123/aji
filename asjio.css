@@ -175,20 +175,20 @@ h1 {
   text-align: center;
 }
 
-ul article {
+#main article {
   height: 20px;
   width: 100%;
   padding: 5px;
   text-align: center;
 }
 
-ul article:hover {
+#main article:hover {
   cursor: pointer;
   background: #ffc6ac;
   outline: 2px solid #002a32;
 }
 
-ul article:active {
+#proof-pane article:active {
   cursor: grabbing;
 }
 

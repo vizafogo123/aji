@@ -1,13 +1,14 @@
 ProofPane = (function() {
-  var ul = document.createElement("ul");
+  /*var ul = document.createElement("ul");
   document.getElementById("proof-pane").appendChild(ul);
-  ul.style = "list-style-type:none";
+  ul.style = "list-style-type:none";*/
+  var pr_pane=document.getElementById("proof-pane");
   var add_element = function(f, id, assumption = false) {
     var img = document.createElement("article");
     img.innerHTML = html_from_formula(f);
-    var li = document.createElement("li");
-    ul.appendChild(li);
-    li.appendChild(img);
+    //var li = document.createElement("li");
+    //ul.appendChild(li);
+    pr_pane.appendChild(img);
     img.onclick = (function(n) {
       return function() {
         Proof.click_formula(n)
@@ -37,12 +38,12 @@ ProofPane = (function() {
 
 
   var remove_element = function(index) {
-    var li = document.querySelectorAll("ul li")[index];
+    var li = document.querySelectorAll("#proof-pane article")[index];
     li.parentNode.removeChild(li);
   }
 
   var modify_element = function(index, f) {
-    document.querySelectorAll("ul li article")[index].innerHTML = html_from_formula(f);
+    document.querySelectorAll("#proof-pane article")[index].innerHTML = html_from_formula(f);
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
 
@@ -57,14 +58,9 @@ ProofPane = (function() {
 (function() {
   var proof_pane = document.getElementById("proof-pane");
   for (i in theorems) {
-    var ul = document.createElement("ul");
-    document.getElementById("theorem-pane").appendChild(ul);
-    ul.style = "list-style-type:none";
     var img = document.createElement("article");
     img.innerHTML = html_from_formula(theorems[i]);
-    var li = document.createElement("li");
-    ul.appendChild(li);
-    li.appendChild(img);
+    document.getElementById("theorem-pane").appendChild(img);
     img.onclick = (function(fo) {
       return function() {
         Proof.add_formula(fo)
