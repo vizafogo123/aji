@@ -11,17 +11,43 @@ ONE = new Operation(102, 0, "1", Operation.EXPRESSION);
 IN = new Operation(11, 2, "%1 \\in %2", Operation.RELATION);
 POK = new Operation("pok", 2, "\\left( %1 \\otimes %2 \\right)", Operation.EXPRESSION);
 PLUS = new Operation("plus", 2, "\\left( %1 + %2 \\right)", Operation.EXPRESSION);
-TIMES = new Operation("times", 2, "\\left( %1 \\dot %2 \\right)", Operation.EXPRESSION);
+TIMES = new Operation("times", 2, "\\left( %1 \\cdot %2 \\right)", Operation.EXPRESSION);
 REL1 = new Operation("rel1", 0, "\\phi", Operation.RELATION);
 REL2 = new Operation("rel2", 0, "\\psi", Operation.RELATION);
 REL3 = new Operation("rel2", 0, "\\gamma", Operation.RELATION);
+SUC = new Operation(102, 1, "S %1", Operation.EXPRESSION);
+REL4 = new Operation("rel2", 1, "\\phi \\left( %1 \\right)", Operation.RELATION);
 Operation.builtin_operations = Operation.builtin_operations.concat([A, B, C]);
-Operation.global_operations = [EMPTY, IN, POK, REL1, REL2, REL3];
+//Operation.global_operations = [EMPTY, IN, POK, REL1, REL2, REL3];
 Operation.local_operations = [];
+theorems=[];
+load_world=function(w){
+  Operation.global_operations = w.operations;
+  theorems=w.theorems;
+}
 
-theorems=[
-  new Formula([FORALL,A,EQUALS,POK,A,A,EMPTY]),
-  new Formula([FORALL,A,FORALL,B,FORALL,C,EQUALS,POK,A,POK,B,C,POK,POK,A,B,C]),
-  new Formula([FORALL,A,EQUALS,POK,A,EMPTY,A]),
-  new Formula([FORALL,A,EQUALS,POK,EMPTY,A,A])
+worlds=[
+  {
+    operations:[TIMES,ONE],
+    theorems:[
+      new Formula([FORALL,A,EQUALS,TIMES,A,A,ONE]),
+      new Formula([FORALL,A,FORALL,B,FORALL,C,EQUALS,TIMES,A,TIMES,B,C,TIMES,TIMES,A,B,C]),
+      new Formula([FORALL,A,EQUALS,TIMES,A,ONE,A]),
+      new Formula([FORALL,A,EQUALS,TIMES,ONE,A,A])
+    ]
+  },
+  {
+    operations:[PLUS,TIMES,SUC,ZERO,REL4],
+    theorems:[
+      new Formula([FORALL,A,NOT,EQUALS,SUC,A,ZERO]),
+      new Formula([FORALL,A,EQUALS,PLUS,A,ZERO,A]),
+      new Formula([FORALL,A,FORALL,B,EQUALS,PLUS,A,SUC,B,SUC,PLUS,A,B]),
+      new Formula([FORALL,A,EQUALS,TIMES,A,ZERO,ZERO]),
+      new Formula([FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]),
+      new Formula([IF,AND,REL4,ZERO,FORALL,A,IF,REL4,A,REL4,SUC,A,FORALL,A,REL4,A])
+    ]
+  }
+
 ];
+
+load_world(worlds[1]);
