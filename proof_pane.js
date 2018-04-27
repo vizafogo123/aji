@@ -63,7 +63,7 @@ ProofPane = (function() {
     document.getElementById("theorem-pane").appendChild(img);
     img.onclick = (function(fo) {
       return function() {
-        Proof.add_formula(fo)
+        Proof.click_theorem(fo)
       }
     })(theorems[i])
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);

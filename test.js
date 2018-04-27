@@ -64,6 +64,31 @@
     .equals(new Formula([A, B, C, A, AND, A, B, C, A, IN, A, A, EQUALS])));
   assert(a.substitute(b, c).equals(new Formula([A, B, C, B, AND, A, B, C, A, IN, A, A, EQUALS])));
 
+  REL = new Operation("rel1", 2, "\\phi", Operation.RELATION);
+  a=new Formula([REL,A,B]);
+  b=new Formula([EQUALS,A,B]);
+  c=new Formula([REL,EMPTY,EMPTY]);
+  assert(c.substitute_definition(new Formula([REL,A,B]),b).equals(new Formula([EQUALS,EMPTY,EMPTY])));
+
+  EXP = new Operation("rel2", 2, "\\phi", Operation.EXPRESSION);
+  a=new Formula([EXP,A,B]);
+  b=new Formula([PLUS,A,B]);
+  c=new Formula([EQUALS,EXP,ZERO,EMPTY,EXP,ZERO,ONE]);
+  assert(c.substitute_definition(new Formula([EXP,A,B]),b).equals(new Formula([EQUALS,PLUS,ZERO,EMPTY,PLUS,ZERO,ONE])));
+
+  a=new Formula([EXP,A,B]);
+  b=new Formula([PLUS,A,PLUS,A,B]);
+  c=new Formula([EQUALS,EXP,ZERO,EMPTY,EXP,ZERO,EXP,ONE,ONE]);
+  assert(c.substitute_definition(new Formula([EXP,A,B]),b).equals(new Formula([EQUALS,PLUS,ZERO,PLUS,
+    ZERO,EMPTY,PLUS,ZERO,PLUS,ZERO,PLUS,ONE,PLUS,ONE,ONE])));
+
+  EXP = new Operation("rel3", 1, "\\phi", Operation.EXPRESSION);
+  a=new Formula([EXP,A]);
+  b=new Formula([PLUS,A,A]);
+  c=new Formula([EXP,EXP,A]);
+  assert(c.substitute_definition(new Formula([EXP,A]),b).equals(new Formula([PLUS,PLUS,A,A,PLUS,A,A])));
+
+
 
 
 })();

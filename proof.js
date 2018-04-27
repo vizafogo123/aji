@@ -230,16 +230,20 @@ Proof = (function() {
     remove_unused_locals();
   }
 
+  var click_theorem=function(th){
+    add_formula(th)
+  }
 
   return {
     click_formula: click_formula,
     drag_drop_formula: drag_drop_formula,
+    click_theorem:click_theorem,
     add_formula: add_formula, //debug
-    list: list, //debug
-    contradiction: contradiction, //debug
-    deduction: deduction, //debug
-    remove_unused_locals: remove_unused_locals, //debug
-    remove_formula: remove_formula, //debug
+    //list: list, //debug
+    //contradiction: contradiction, //debug
+    //deduction: deduction, //debug
+    //remove_unused_locals: remove_unused_locals, //debug
+    //remove_formula: remove_formula, //debug
     make_assumption: make_assumption
   }
 

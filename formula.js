@@ -2,7 +2,7 @@ function imgsrc_from_formula(f) {
   return "http://latex.codecogs.com/svg.latex?" + f.to_latex()
 }
 
-function html_from_formula(f){
+function html_from_formula(f) {
   return "\\( " + f.to_latex() + " \\)";
 }
 
@@ -17,7 +17,7 @@ var array_equal = function(a, b) {
 function Formula(body) {
   this.body = body;
 
-  this.remove_double_neg=function() {
+  this.remove_double_neg = function() {
     for (var i = 0; i < this.body.length - 1; i++) {
       if (this.body[i] === NOT && this.body[i + 1] === NOT) {
         this.body = this.body.slice(0, i).concat(this.body.slice(i + 2));
@@ -122,7 +122,7 @@ function Formula(body) {
   }
 
   this.add_op = function(op) {
-    if (this.body.length>0 && op===NOT && this.body[this.body.length-1]===NOT){
+    if (this.body.length > 0 && op === NOT && this.body[this.body.length - 1] === NOT) {
       this.body.pop();
     } else this.body.push(op);
   }
@@ -163,11 +163,30 @@ function Formula(body) {
     return this.substitute_parallel([source], [dest]);
   }
 
-  this.first_child=function(k){
-    return this.body.slice(k+1, this.start_of_child(k, 2));
+  this.first_child = function(k) {
+    return this.body.slice(k + 1, this.start_of_child(k, 2));
   }
-  this.second_child=function(k){  //only applicable if last
+  this.second_child = function(k) { //only applicable if last
     return this.body.slice(this.start_of_child(k, 2));
+  }
+
+  this.substitute_definition = function(fun, definition) {
+    var res = this.deepcopy();
+    var k = res.body.length - 1;
+    while (k >= 0) {
+      if (res.body[k] === fun.body[0]) {
+        var source_list = [];
+        for (var v = 1; v <= res.body[k].no_of_args; v++) source_list.push(new Formula([fun.body[v]]));
+        var dest_list = [];
+        for (var v = 1; v <= res.body[k].no_of_args; v++) dest_list.push(new Formula(
+          res.body.slice(res.start_of_child(k, v), res.start_of_child(k, v + 1))));
+        res.body = res.body.slice(0, k).concat(definition.deepcopy().substitute_parallel(source_list, dest_list).body)
+          .concat(res.body.slice(res.start_of_child(k, res.body[k].no_of_args + 1)));
+      }
+      k = k - 1;
+    }
+    return res;
+
   }
 
 }
