@@ -230,14 +230,21 @@ Proof = (function() {
     remove_unused_locals();
   }
 
-  var click_theorem=function(th){
-    add_formula(th)
+  var click_theorem = function(th) {
+    if (!th.schema) {
+      add_formula(th);
+    } else {
+      FormulaBuilder.show(function(f) {
+        add_formula(th.substitute_definition(new Formula([th.schema[0]].concat(ARGUMENTS.slice(0, 1))),f))
+      }, mod = 'rel', args = ARGUMENTS.slice(0, 1))
+    }
+
   }
 
   return {
     click_formula: click_formula,
     drag_drop_formula: drag_drop_formula,
-    click_theorem:click_theorem,
+    click_theorem: click_theorem,
     add_formula: add_formula, //debug
     //list: list, //debug
     //contradiction: contradiction, //debug

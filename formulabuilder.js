@@ -5,15 +5,21 @@ FormulaBuilder = (function() {
   var after = function(f) {};
   var fbuilder_formula = new Formula([]);
 
-  var add_op = function(op, local = false) {
+  var remove_all_child_nodes=function(node){
+    var k = node.childElementCount,i;
+    for (i = 0; i < k - 1; i++) node.removeChild(node.lastChild);
+  }
+
+  var add_op = function(op, local = false, argument = false) {
     var img = document.createElement("article");
     img.innerHTML = html_from_formula((new Formula([op])).fill_with_placeholders());
     var parent = (local ? document.getElementById("loc") :
-      (op.type === Operation.QUANTOR ? document.getElementById("qua") :
-        (op.type === Operation.LOGICAL ? document.getElementById("log") :
-          (op.type === Operation.EXPRESSION ? document.getElementById("exp") :
-            (op.type === Operation.RELATION ? document.getElementById("rel") :
-              (op.type === Operation.VARIABLE ? document.getElementById("var") : 0))))));
+      (argument ? document.getElementById("arg") :
+        (op.type === Operation.QUANTOR ? document.getElementById("qua") :
+          (op.type === Operation.LOGICAL ? document.getElementById("log") :
+            (op.type === Operation.EXPRESSION ? document.getElementById("exp") :
+              (op.type === Operation.RELATION ? document.getElementById("rel") :
+                (op.type === Operation.VARIABLE ? document.getElementById("var") : 0)))))));
     parent.appendChild(img);
     img.addEventListener('click', (function(oper) {
       return function(e) {
@@ -37,10 +43,7 @@ FormulaBuilder = (function() {
   add_globals();
 
   var refresh_locals = function() {
-    var loc = document.getElementById("loc");
-    var k = loc.childElementCount,
-      i;
-    for (i = 0; i < k - 1; i++) loc.removeChild(loc.lastChild);
+    remove_all_child_nodes(document.getElementById("loc"));
 
     for (var i in Operation.local_operations) {
       add_op(Operation.local_operations[i], local = true);
@@ -85,10 +88,16 @@ FormulaBuilder = (function() {
   }
   refresh();
 
-  var show = function(a, mod = 'rel') {
+  var show = function(a, mod = 'rel', args = []) {
     fbuilder.style.display = "block";
     mode = mod;
     after = a;
+    remove_all_child_nodes(document.getElementById("arg"));
+    if (args.length > 0) {
+      for(var i in args) add_op(args[i],local = false,argument=true);
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+
   }
 
   return {

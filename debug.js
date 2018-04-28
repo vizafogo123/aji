@@ -26,6 +26,11 @@ load_world=function(w){
   theorems=w.theorems;
 }
 
+add_schemas_to_formula=function(f,schemas){
+  f.schema=schemas;
+  return f;
+}
+
 worlds=[
   {
     operations:[TIMES,ONE],
@@ -37,17 +42,23 @@ worlds=[
     ]
   },
   {
-    operations:[PLUS,TIMES,SUC,ZERO,REL4],
+    operations:[PLUS,TIMES,SUC,ZERO],
     theorems:[
       new Formula([FORALL,A,NOT,EQUALS,SUC,A,ZERO]),
       new Formula([FORALL,A,EQUALS,PLUS,A,ZERO,A]),
       new Formula([FORALL,A,FORALL,B,EQUALS,PLUS,A,SUC,B,SUC,PLUS,A,B]),
       new Formula([FORALL,A,EQUALS,TIMES,A,ZERO,ZERO]),
       new Formula([FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]),
-      new Formula([IF,AND,REL4,ZERO,FORALL,A,IF,REL4,A,REL4,SUC,A,FORALL,A,REL4,A])
+      add_schemas_to_formula(new Formula([IF,AND,REL4,ZERO,FORALL,A,IF,REL4,A,REL4,SUC,A,FORALL,A,REL4,A]),[REL4])
     ]
   }
 
 ];
 
 load_world(worlds[1]);
+
+ARGUMENTS=[
+  new Operation("arg1", 0, "x", Operation.EXPRESSION),
+  new Operation("arg2", 0, "y", Operation.EXPRESSION),
+  new Operation("arg3", 0, "z", Operation.EXPRESSION)
+]
