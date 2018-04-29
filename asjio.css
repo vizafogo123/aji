@@ -195,6 +195,11 @@ h1 {
   outline: 2px solid #002a32;
 }
 
+#proof-pane {
+  overflow-x: auto;
+}
+
+
 #proof-pane article:active {
   cursor: grabbing;
 }
@@ -222,6 +227,16 @@ h1 {
   display: grid;
   grid-template-columns: auto 50px;
 
+}
+
+#delete{
+  width:100px;
+  height:100px;
+}
+
+#assumption{
+  width:100px;
+  height:100px;
 }
 
 }

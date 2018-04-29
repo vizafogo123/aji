@@ -1,13 +1,19 @@
 ProofPane = (function() {
-  /*var ul = document.createElement("ul");
-  document.getElementById("proof-pane").appendChild(ul);
-  ul.style = "list-style-type:none";*/
+  document.getElementById("assumption").draggable=false;
+  var img_del=document.getElementById("delete");
+  img_del.draggable = false;
+  img_del.ondrop=function(event){
+    event.preventDefault();
+    Proof.remove_request(event.dataTransfer.getData("text"));
+  }
+  img_del.ondragover = function(event) {
+    event.preventDefault();
+  }
+
   var pr_pane=document.getElementById("proof-pane");
   var add_element = function(f, id, assumption = false) {
     var img = document.createElement("article");
     img.innerHTML = html_from_formula(f);
-    //var li = document.createElement("li");
-    //ul.appendChild(li);
     pr_pane.appendChild(img);
     img.onclick = (function(n) {
       return function() {

@@ -235,10 +235,18 @@ Proof = (function() {
       add_formula(th);
     } else {
       FormulaBuilder.show(function(f) {
-        add_formula(th.substitute_definition(new Formula([th.schema[0]].concat(ARGUMENTS.slice(0, 1))),f))
+        add_formula(th.substitute_definition(new Formula([th.schema[0]].concat(ARGUMENTS.slice(0, 1))), f))
       }, mod = 'rel', args = ARGUMENTS.slice(0, 1))
     }
 
+  }
+
+  var remove_request = function(n) {
+    if (list[n].assumption) {
+      var ids = Object.keys(list);
+      if (ids[ids.length - 1] !== n) return;
+    }
+    remove_formula(n);
   }
 
   return {
@@ -246,12 +254,8 @@ Proof = (function() {
     drag_drop_formula: drag_drop_formula,
     click_theorem: click_theorem,
     add_formula: add_formula, //debug
-    //list: list, //debug
-    //contradiction: contradiction, //debug
-    //deduction: deduction, //debug
-    //remove_unused_locals: remove_unused_locals, //debug
-    //remove_formula: remove_formula, //debug
-    make_assumption: make_assumption
+    make_assumption: make_assumption,
+    remove_request: remove_request
   }
 
 })()
