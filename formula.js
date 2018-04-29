@@ -74,12 +74,6 @@ function Formula(body) {
     return p[0];
   }
 
-  this.substitute_equivalence = function(n) {
-    this.body = this.body.slice(0, n).concat([AND, IF]).concat(this.body.slice(n + 1, this.start_of_child(n, 3)))
-      .concat([IF]).concat(this.body.slice(this.start_of_child(n, 2), this.start_of_child(n, 3)))
-      .concat(this.body.slice(n + 1, this.start_of_child(n, 2))).concat(this.body.slice(this.start_of_child(n, 3)))
-  }
-
   this.parent_and_no_of_child = function(k) {
     if (k === 0) return [-1, 1];
     k--;

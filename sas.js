@@ -1,3 +1,5 @@
+COLOR_VARIABLES=true;
+
 function Operation(id, no_of_args, print_scheme, type) {
   this.id = id;
   this.no_of_args = no_of_args;
@@ -9,6 +11,7 @@ function Operation(id, no_of_args, print_scheme, type) {
     for (var i = 0; i < arg_list.length; i++) {
       s = s.replace("%" + (i + 1), arg_list[i])
     }
+    if (this.type===Operation.VARIABLE && COLOR_VARIABLES) s="\\color{blue}{"+s+"}";
     return s;
   }
 }

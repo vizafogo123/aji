@@ -218,6 +218,10 @@ h1 {
   background: #c4a29e;
 }
 
+.variable-div{
+  display: grid;
+  grid-template-columns: auto 50px;
 
+}
 
 }
