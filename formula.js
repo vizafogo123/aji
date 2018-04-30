@@ -14,6 +14,10 @@ var array_equal = function(a, b) {
   return true;
 }
 
+
+
+
+
 function Formula(body) {
   this.body = body;
 
@@ -181,6 +185,38 @@ function Formula(body) {
     }
     return res;
 
+  }
+
+  this.match_pattern = function(source, vars) {
+    var i = 0,
+      j = 0,
+      res = Array(),
+      subf, k;
+    while (i < source.length && j < this.body.length) {
+      if (vars.includes(source[i])) {
+        k = vars.findIndex(function(x) {
+          return x === source[i]
+        });
+        subf = this.body.slice(i, this.start_of_child(i, this.body[i].no_of_args + 1));
+        if (res[k]) {
+          if (!array_equal(res[k].body, subf)) {
+            return
+          }
+        } else {
+          res[k] = new Formula(subf);
+        }
+        i = i + 1;
+        j = j + subf.length;        
+      } else {
+        if (source[i] === this.body[j]) {
+          i = i + 1;
+          j = j + 1;
+        } else {
+          return
+        }
+      }
+    }
+    return res;
   }
 
 }

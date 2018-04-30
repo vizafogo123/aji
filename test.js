@@ -23,18 +23,11 @@
   assert(a.body.length===5);
 
 
-  a = new Formula([FORALL, PLACEHOLDER, EQUI, IN, PLACEHOLDER, PLACEHOLDER, EQUALS, PLACEHOLDER, PLACEHOLDER])
-  a.substitute_equivalence(2)
-  assert(a.equals(new Formula([FORALL, PLACEHOLDER, AND, IF, IN, PLACEHOLDER, PLACEHOLDER, EQUALS, PLACEHOLDER, PLACEHOLDER,
-    IF, EQUALS, PLACEHOLDER, PLACEHOLDER, IN, PLACEHOLDER, PLACEHOLDER
-  ])))
+  assert(Operation.can_follow(FORALL, A, 1));
+  assert(!Operation.can_follow(FORALL, IN, 1));
+  assert(!Operation.can_follow(PLACEHOLDER, IN, 2));
 
-  assert(Operation.can_follow(FORALL, A, 1))
-  assert(!Operation.can_follow(FORALL, IN, 1))
-  assert(!Operation.can_follow(PLACEHOLDER, IN, 2))
-
-  assert(a.parent_and_no_of_child(2) == "0,2")
-
+  //assert(a.parent_and_no_of_child(2) == "0,2");
   b = new Formula([]);
   assert(b.op_addable(IN, "rel"))
   assert(!b.op_addable(FORALL, "exp"))
@@ -82,13 +75,32 @@
   assert(c.substitute_definition(new Formula([EXP,A,B]),b).equals(new Formula([EQUALS,PLUS,ZERO,PLUS,
     ZERO,EMPTY,PLUS,ZERO,PLUS,ZERO,PLUS,ONE,PLUS,ONE,ONE])));
 
-  EXP = new Operation("rel3", 1, "\\phi", Operation.EXPRESSION);
-  a=new Formula([EXP,A]);
+  EXP2 = new Operation("rel3", 1, "\\phi", Operation.EXPRESSION);
+  a=new Formula([EXP2,A]);
   b=new Formula([PLUS,A,A]);
-  c=new Formula([EXP,EXP,A]);
-  assert(c.substitute_definition(new Formula([EXP,A]),b).equals(new Formula([PLUS,PLUS,A,A,PLUS,A,A])));
+  c=new Formula([EXP2,EXP2,A]);
+  assert(c.substitute_definition(new Formula([EXP2,A]),b).equals(new Formula([PLUS,PLUS,A,A,PLUS,A,A])));
 
+  a=new Formula([EXP2,EXP2,A]);
+  b=[EXP2,A];
+  c=[A];
+  assert(a.match_pattern(b,c)[0].equals(new Formula([EXP2,A])));
 
+  a=new Formula([EXP,ZERO,EXP,ZERO,ONE]);
+  b=[EXP,A,B];
+  c=[A,B];
+  assert(a.match_pattern(b,c)[0].equals(new Formula([ZERO])));
+  assert(a.match_pattern(b,c)[1].equals(new Formula([EXP,ZERO,ONE])));
 
+  a=new Formula([EXP,ZERO,EXP,ZERO,ONE]);
+  b=[EXP,A,EXP,A,B];
+  c=[A,B];
+  assert(a.match_pattern(b,c)[0].equals(new Formula([ZERO])));
+  assert(a.match_pattern(b,c)[1].equals(new Formula([ONE])));
+
+  a=new Formula([EXP,ZERO,EXP,ZERO,ONE]);
+  b=[EXP,A,EXP,B,B];
+  c=[A,B];
+  assert(!a.match_pattern(b,c));
 
 })();
