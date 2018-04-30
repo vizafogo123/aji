@@ -103,4 +103,13 @@
   c=[A,B];
   assert(!a.match_pattern(b,c));
 
+  a=new Formula([EXP,ZERO,EXP,ZERO,ONE]);
+  b=[EXP,A,B];
+  c=[A,B];
+  assert(a.match_subpattern(b,c)[0][0].equals(new Formula([ZERO])));
+  assert(a.match_subpattern(b,c)[0][1].equals(new Formula([EXP,ZERO,ONE])));
+  assert(a.match_subpattern(b,c)[1][0].equals(new Formula([ZERO])));
+  assert(a.match_subpattern(b,c)[1][1].equals(new Formula([ONE])));
+
+
 })();

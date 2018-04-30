@@ -206,7 +206,7 @@ function Formula(body) {
           res[k] = new Formula(subf);
         }
         i = i + 1;
-        j = j + subf.length;        
+        j = j + subf.length;
       } else {
         if (source[i] === this.body[j]) {
           i = i + 1;
@@ -218,5 +218,22 @@ function Formula(body) {
     }
     return res;
   }
+
+  this.match_subpattern = function(source, vars) {
+    if (source.length <= 1) return [];
+    var res, i, subf, r;
+    var res = Array();
+    for (i = 0; i <= this.body.length - source.length; i++) {
+      if (source[0] === this.body[i]) {
+        subf = this.body.slice(i, this.start_of_child(i, this.body[i].no_of_args + 1));
+        if (subf.length >= source.length) {
+          r = (new Formula(subf)).match_pattern(source, vars);
+          if (r) res.push(r);
+        }
+      }
+    }
+    return res;
+  }
+
 
 }
