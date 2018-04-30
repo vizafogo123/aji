@@ -24,12 +24,21 @@ ProofPane = (function() {
     img.ondrop = (function(n) {
       return function(event) {
         event.preventDefault();
+        img.classList.remove("poj");
         Proof.drag_drop_formula(event.dataTransfer.getData("text"), n);
       }
     })(id)
 
     img.ondragover = function(event) {
       event.preventDefault();
+    }
+
+    img.ondragenter= function(event) {
+      img.classList.add("poj");
+    }
+
+    img.ondragleave= function(event) {
+      img.classList.remove("poj");
     }
 
     img.ondragstart = (function(n) {
@@ -77,3 +86,9 @@ ProofPane = (function() {
   }
 
 })()
+
+
+Proof.add_formula(new Formula([FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]));
+Proof.add_formula(new Formula([FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]));
+Proof.add_formula(new Formula([FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]));
+Proof.add_formula(new Formula([AND,AND,FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A,FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A,FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]));

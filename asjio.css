@@ -184,8 +184,10 @@ h1 {
 
 #main article {
   height: 20px;
-  width: 100%;
+  width: 95%;
   padding: 5px;
+  margin-left:5px;
+  margin-right: 5px;
   text-align: center;
 }
 
@@ -195,8 +197,11 @@ h1 {
   outline: 2px solid #002a32;
 }
 
+#main article * {pointer-events: none;}
+
 #proof-pane {
   overflow-x: auto;
+  overflow-y: auto;
 }
 
 
@@ -217,9 +222,11 @@ h1 {
 }
 
 #main {
+  height:95vh;
   display: grid;
   grid-gap: 0px;
   grid-template-columns: 50% 50%;
+  grid-template-rows: 100%;
   background: #c4a29e;
 }
 
@@ -227,6 +234,10 @@ h1 {
   display: grid;
   grid-template-columns: auto 50px;
 
+}
+
+.poj{
+  background:yellow;
 }
 
 #delete{
