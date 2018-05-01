@@ -81,10 +81,15 @@
   c=new Formula([EXP2,EXP2,A]);
   assert(c.substitute_definition(new Formula([EXP2,A]),b).equals(new Formula([PLUS,PLUS,A,A,PLUS,A,A])));
 
+  a=new Formula([EXP2,EXP2,ONE]);
+  b=[EXP2,A];
+  c=[A];
+  assert(a.match_pattern(b,c)[0].equals(new Formula([EXP2,ONE])));
+
   a=new Formula([EXP2,EXP2,A]);
   b=[EXP2,A];
   c=[A];
-  assert(a.match_pattern(b,c)[0].equals(new Formula([EXP2,A])));
+  assert(!a.match_pattern(b,c));
 
   a=new Formula([EXP,ZERO,EXP,ZERO,ONE]);
   b=[EXP,A,B];

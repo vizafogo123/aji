@@ -15,9 +15,6 @@ var array_equal = function(a, b) {
 }
 
 
-
-
-
 function Formula(body) {
   this.body = body;
 
@@ -190,6 +187,7 @@ function Formula(body) {
   this.match_pattern = function(source, vars) {
     var i = 0,
       j = 0,
+      c = 0,
       res = Array(),
       subf, k;
     while (i < source.length && j < this.body.length) {
@@ -204,6 +202,7 @@ function Formula(body) {
           }
         } else {
           res[k] = new Formula(subf);
+          c = c + 1;
         }
         i = i + 1;
         j = j + subf.length;
@@ -216,7 +215,12 @@ function Formula(body) {
         }
       }
     }
-    return res;
+    if (c === vars.length) {
+      for (i = 0; i < res.length; i++)
+        for (j = 0; j < res[i].body.length; j++)
+          if (res[i].body[j].type === Operation.VARIABLE) return;
+      return res;
+    }
   }
 
   this.match_subpattern = function(source, vars) {
