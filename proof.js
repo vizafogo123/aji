@@ -154,13 +154,58 @@ Proof = (function() {
           add_formula(new Formula(f1.second_child(k)).substitute_parallel(vars.map(function(op) {
             return new Formula([op])
           }), match));
-        } else {
-          match = f2.match_pattern(negate(f1.second_child(k)), vars);
-          if (match) {
-            add_formula(new Formula(negate(f1.first_child(k))).substitute_parallel(vars.map(function(op) {
-              return new Formula([op])
-            }), match));
-          }
+          return
+        }
+        match = f2.match_pattern(negate(f1.second_child(k)), vars);
+        if (match) {
+          add_formula(new Formula(negate(f1.first_child(k))).substitute_parallel(vars.map(function(op) {
+            return new Formula([op])
+          }), match));
+          return
+        }
+      } else if (f1.body[k] === OR) {
+        match = f2.match_pattern(negate(f1.first_child(k)), vars);
+        if (match) {
+          add_formula(new Formula(f1.second_child(k)).substitute_parallel(vars.map(function(op) {
+            return new Formula([op])
+          }), match));
+          return
+        }
+        match = f2.match_pattern(negate(f1.second_child(k)), vars);
+        if (match) {
+          add_formula(new Formula(f1.first_child(k)).substitute_parallel(vars.map(function(op) {
+            return new Formula([op])
+          }), match));
+          return
+        }
+      } else if (f1.body[k] === EQUI) {
+        match = f2.match_pattern(f1.first_child(k), vars);
+        if (match) {
+          add_formula(new Formula(f1.second_child(k)).substitute_parallel(vars.map(function(op) {
+            return new Formula([op])
+          }), match));
+          return
+        }
+        match = f2.match_pattern(negate(f1.first_child(k)), vars);
+        if (match) {
+          add_formula(new Formula(negate(f1.second_child(k))).substitute_parallel(vars.map(function(op) {
+            return new Formula([op])
+          }), match));
+          return
+        }
+        match = f2.match_pattern(f1.second_child(k), vars);
+        if (match) {
+          add_formula(new Formula(f1.first_child(k)).substitute_parallel(vars.map(function(op) {
+            return new Formula([op])
+          }), match));
+          return
+        }
+        match = f2.match_pattern(negate(f1.second_child(k)), vars);
+        if (match) {
+          add_formula(new Formula(negate(f1.first_child(k))).substitute_parallel(vars.map(function(op) {
+            return new Formula([op])
+          }), match));
+          return
         }
       }
     }

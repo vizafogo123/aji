@@ -48,6 +48,7 @@ worlds=[
       new Formula([FORALL,A,FORALL,B,EQUALS,PLUS,A,SUC,B,SUC,PLUS,A,B]),
       new Formula([FORALL,A,EQUALS,TIMES,A,ZERO,ZERO]),
       new Formula([FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]),
+      new Formula([FORALL,A,FORALL,B,IF,EQUALS,SUC,A,SUC,B,EQUALS,A,B]),
       add_schemas_to_formula(new Formula([IF,AND,REL4,ZERO,FORALL,A,IF,REL4,A,REL4,SUC,A,FORALL,A,REL4,A]),[REL4])
     ]
   }

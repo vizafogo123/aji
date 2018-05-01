@@ -88,7 +88,6 @@ ProofPane = (function() {
 })()
 
 Proof.add_formula(new Formula([FORALL,A,FORALL,B,FORALL,C,IF,EQUALS,PLUS,A,C,PLUS,B,C,EQUALS,A,B]));
-Proof.add_formula(new Formula([FORALL,A,FORALL,B,IF,EQUALS,SUC,A,SUC,B,EQUALS,A,B]));
 Proof.add_formula(new Formula([EQUALS,PLUS,ZERO,SUC,ZERO,PLUS,SUC,ZERO,SUC,ZERO]));
 /*Proof.add_formula(new Formula([FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]));
 Proof.add_formula(new Formula([FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]));
