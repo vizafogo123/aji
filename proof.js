@@ -148,65 +148,25 @@ Proof = (function() {
         vars.push(f1.body[k + 1]);
         k = k + 2;
       }
+      var ded = function(x, y) {
+        match = f2.match_pattern(x, vars);
+        if (match) {
+          add_formula(new Formula(y).substitute_parallel(vars.map(function(op) {
+            return new Formula([op])
+          }), match));
+          return true;
+        }
+        return false;
+      }
       if (f1.body[k] === IF) {
-        match = f2.match_pattern(f1.first_child(k), vars);
-        if (match) {
-          add_formula(new Formula(f1.second_child(k)).substitute_parallel(vars.map(function(op) {
-            return new Formula([op])
-          }), match));
-          return
-        }
-        match = f2.match_pattern(negate(f1.second_child(k)), vars);
-        if (match) {
-          add_formula(new Formula(negate(f1.first_child(k))).substitute_parallel(vars.map(function(op) {
-            return new Formula([op])
-          }), match));
-          return
-        }
-      } else if (f1.body[k] === OR) {
-        match = f2.match_pattern(negate(f1.first_child(k)), vars);
-        if (match) {
-          add_formula(new Formula(f1.second_child(k)).substitute_parallel(vars.map(function(op) {
-            return new Formula([op])
-          }), match));
-          return
-        }
-        match = f2.match_pattern(negate(f1.second_child(k)), vars);
-        if (match) {
-          add_formula(new Formula(f1.first_child(k)).substitute_parallel(vars.map(function(op) {
-            return new Formula([op])
-          }), match));
-          return
-        }
+        if(!ded(f1.first_child(k),f1.second_child(k))) ded(negate(f1.second_child(k)),negate(f1.first_child(k)));
+      }  else if (f1.body[k] === OR) {
+        if(!ded(negate(f1.first_child(k)),f1.second_child(k))) ded(negate(f1.second_child(k)),f1.first_child(k));
       } else if (f1.body[k] === EQUI) {
-        match = f2.match_pattern(f1.first_child(k), vars);
-        if (match) {
-          add_formula(new Formula(f1.second_child(k)).substitute_parallel(vars.map(function(op) {
-            return new Formula([op])
-          }), match));
-          return
-        }
-        match = f2.match_pattern(negate(f1.first_child(k)), vars);
-        if (match) {
-          add_formula(new Formula(negate(f1.second_child(k))).substitute_parallel(vars.map(function(op) {
-            return new Formula([op])
-          }), match));
-          return
-        }
-        match = f2.match_pattern(f1.second_child(k), vars);
-        if (match) {
-          add_formula(new Formula(f1.first_child(k)).substitute_parallel(vars.map(function(op) {
-            return new Formula([op])
-          }), match));
-          return
-        }
-        match = f2.match_pattern(negate(f1.second_child(k)), vars);
-        if (match) {
-          add_formula(new Formula(negate(f1.first_child(k))).substitute_parallel(vars.map(function(op) {
-            return new Formula([op])
-          }), match));
-          return
-        }
+        if(!ded(f1.first_child(k),f1.second_child(k)))
+        if(!ded(negate(f1.first_child(k)),negate(f1.second_child(k))))
+        if(!ded(f1.second_child(k),f1.first_child(k)))
+        ded(negate(f1.second_child(k)),negate(f1.first_child(k)));
       }
     }
   }
