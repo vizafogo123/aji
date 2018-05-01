@@ -138,13 +138,29 @@ Proof = (function() {
       return;
     }
     if (f1.body[0] === EQUALS) {
-      var res1 = f2.substitute(new Formula(f1.first_child(0)), new Formula(f1.second_child(0)));
-      if (!array_equal(res1.body, f2.body)) {
-        add_formula(res1);
-      } else {
-        var res2 = f2.substitute(new Formula(f1.second_child(0)), new Formula(f1.first_child(0)));
-        if (!array_equal(res2.body, f2.body)) {
-          add_formula(res2);
+      substitution(f1, f2)
+    }
+    if (f1.body[0] === FORALL) {
+      var k = 0,
+        vars = Array(),
+        match;
+      while (f1.body[k] === FORALL) {
+        vars.push(f1.body[k + 1]);
+        k = k + 2;
+      }
+      if (f1.body[k] === IF) {
+        match = f2.match_pattern(f1.first_child(k), vars);
+        if (match) {
+          add_formula(new Formula(f1.second_child(k)).substitute_parallel(vars.map(function(op) {
+            return new Formula([op])
+          }), match));
+        } else {
+          match = f2.match_pattern(negate(f1.second_child(k)), vars);
+          if (match) {
+            add_formula(new Formula(negate(f1.first_child(k))).substitute_parallel(vars.map(function(op) {
+              return new Formula([op])
+            }), match));
+          }
         }
       }
     }
@@ -209,6 +225,18 @@ Proof = (function() {
       }
     }
     return false;
+  }
+
+  var substitution = function(f1, f2) {
+    var res1 = f2.substitute(new Formula(f1.first_child(0)), new Formula(f1.second_child(0)));
+    if (!array_equal(res1.body, f2.body)) {
+      add_formula(res1);
+    } else {
+      var res2 = f2.substitute(new Formula(f1.second_child(0)), new Formula(f1.first_child(0)));
+      if (!array_equal(res2.body, f2.body)) {
+        add_formula(res2);
+      }
+    }
   }
 
   var make_assumption = function() {

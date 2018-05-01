@@ -108,6 +108,12 @@
   c=[A,B];
   assert(!a.match_pattern(b,c));
 
+  a=new Formula([EQUALS,SUC,ZERO,PLUS,ZERO,SUC,ZERO]);
+  b=[EQUALS,A,B];
+  c=[A,B];
+  assert(a.match_pattern(b,c)[0].equals(new Formula([SUC,ZERO])));
+  assert(a.match_pattern(b,c)[1].equals(new Formula([PLUS,ZERO,SUC,ZERO])));
+
   a=new Formula([EXP,ZERO,EXP,ZERO,ONE]);
   b=[EXP,A,B];
   c=[A,B];

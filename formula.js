@@ -6,6 +6,14 @@ function html_from_formula(f) {
   return "\\( " + f.to_latex() + " \\)";
 }
 
+function negate(arr){
+  if (arr[0] === NOT) {
+    return arr.slice(1)
+  } else {
+    return [NOT].concat(arr)
+  }
+}
+
 var array_equal = function(a, b) {
   if (a.length !== b.length) return false;
   for (var i = 0; i < a.length; i++) {
@@ -33,11 +41,7 @@ function Formula(body) {
   }
 
   this.negation = function() {
-    if (this.body[0] === NOT) {
-      return new Formula(this.body.slice(1))
-    } else {
-      return new Formula([NOT].concat(this.body))
-    }
+    return new Formula(negate(this.body));
   }
 
   this.equals = function(f) {
@@ -195,7 +199,7 @@ function Formula(body) {
         k = vars.findIndex(function(x) {
           return x === source[i]
         });
-        subf = this.body.slice(i, this.start_of_child(i, this.body[i].no_of_args + 1));
+        subf = this.body.slice(j, this.start_of_child(j, this.body[j].no_of_args + 1));
         if (res[k]) {
           if (!array_equal(res[k].body, subf)) {
             return
