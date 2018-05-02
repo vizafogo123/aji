@@ -14,21 +14,21 @@
   <div id="main">
     <div id="proof-pane">
       <input type="button" value="Cheat add" onclick="cheat_add_formula();" />
-      <img id="assumption" src="img\assumption.svg" onclick="Proof.make_assumption();" >
+      <img id="assumption" src="img\assumption.svg" onclick="Proof.make_assumption();">
       <img id="delete" src="img\delete.svg">
     </div>
     <div id="theorem-pane">
     </div>
   </div>
-  <div id="formula-builder">
-    <div id="formula-builder-content">
-      <div id="formula-builder-header">
+  <div id="formula-builder" class="modal">
+    <div id="formula-builder-content" class="modal-content">
+      <div id="formula-builder-header" class="modal-header">
         <span class="close">×</span>
         <h2>Formula builder</h2>
       </div>
-      <div id="formula-builder-body">
+      <div id="formula-builder-body" class="modal-body">
         <div id="a">globals</div>
-        <div id="b">localsasd</div>
+        <div id="b">locals</div>
         <div id="log">
           <h1>logicals</h1>
         </div>
@@ -51,14 +51,27 @@
           <h1>arguments</h1>
         </div>
       </div>
-      <div id="formula-builder-footer">
+      <div id="formula-builder-footer" class="modal-footer">
         <div id="result">asdfafasfdasfd</div>
         <button id="button-clear" disabled="">clear</button>
         <button id="button-backspace" disabled="">backspace</button>
         <button id="button-done" disabled="">done</button>
       </div>
     </div>
-
+  </div>
+  <div id="formula-selector" class="modal">
+    <div id="formula-selector-content" class="modal-content">
+      <div id="formula-selector-header" class="modal-header">
+        <span class="close">×</span>
+        <h2>pjoaa</h2>
+      </div>
+      <div id="formula-selector-body" class="modal-body">
+        <div id="a">globals</div>
+      </div>
+      <div id="formula-selector-footer" class="modal-footer">
+      </div>
+    </div>
+  </div>
 </body>
 <script src="sas.js"></script>
 <script src="formula.js"></script>
@@ -67,4 +80,5 @@
 <script src="formulabuilder.js"></script>
 <script src="proof_pane.js"></script>
 <!--<script src="test.js"></script>-->
+
 </html>

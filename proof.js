@@ -148,25 +148,34 @@ Proof = (function() {
         vars.push(f1.body[k + 1]);
         k = k + 2;
       }
+      var va = function() {
+        return vars.map(function(op) {
+          return new Formula([op])
+        })
+      }
       var ded = function(x, y) {
         match = f2.match_pattern(x, vars);
         if (match) {
-          add_formula(new Formula(y).substitute_parallel(vars.map(function(op) {
-            return new Formula([op])
-          }), match));
+          add_formula(new Formula(y).substitute_parallel(va(), match));
           return true;
         }
         return false;
       }
       if (f1.body[k] === IF) {
-        if(!ded(f1.first_child(k),f1.second_child(k))) ded(negate(f1.second_child(k)),negate(f1.first_child(k)));
-      }  else if (f1.body[k] === OR) {
-        if(!ded(negate(f1.first_child(k)),f1.second_child(k))) ded(negate(f1.second_child(k)),f1.first_child(k));
+        if (!ded(f1.first_child(k), f1.second_child(k))) ded(negate(f1.second_child(k)), negate(f1.first_child(k)));
+      } else if (f1.body[k] === OR) {
+        if (!ded(negate(f1.first_child(k)), f1.second_child(k))) ded(negate(f1.second_child(k)), f1.first_child(k));
       } else if (f1.body[k] === EQUI) {
-        if(!ded(f1.first_child(k),f1.second_child(k)))
-        if(!ded(negate(f1.first_child(k)),negate(f1.second_child(k))))
-        if(!ded(f1.second_child(k),f1.first_child(k)))
-        ded(negate(f1.second_child(k)),negate(f1.first_child(k)));
+        if (!ded(f1.first_child(k), f1.second_child(k)))
+          if (!ded(negate(f1.first_child(k)), negate(f1.second_child(k))))
+            if (!ded(f1.second_child(k), f1.first_child(k)))
+              ded(negate(f1.second_child(k)), negate(f1.first_child(k)));
+      } else if (f1.body[k] === EQUALS) {
+        match = f2.match_subpattern(f1.first_child(k), vars);
+        if (match.length > 0) {
+          add_formula(f2.substitute(new Formula(f1.first_child(k)).substitute_parallel(va(), match[0]),
+          new Formula(f1.second_child(k)).substitute_parallel(va(), match[0])))
+        }
       }
     }
   }

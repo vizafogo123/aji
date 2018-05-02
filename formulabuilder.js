@@ -112,7 +112,7 @@ FormulaBuilder = (function() {
     refresh();
   }
 
-  document.getElementsByClassName("close")[0].onclick = function() {
+  document.querySelector("#formula-builder .close").onclick = function() {
     close();
   }
 
@@ -150,3 +150,12 @@ FormulaBuilder = (function() {
   }
 
 })();
+
+
+FormulaSelector = (function() {
+  //document.querySelector("#formula-selector").style.display = "block";
+  document.querySelector("#formula-selector .close").onclick = function() {
+    document.querySelector("#formula-selector").style.display = "none";
+  }
+}
+)();
