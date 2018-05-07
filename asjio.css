@@ -62,7 +62,7 @@ body {
   background: #c4a29e;
 }
 
-#formula-builder-body div {
+#formula-builder-body > div, #formula-selector-body > div {
   border: 1px solid #002a32;
 }
 
@@ -165,7 +165,7 @@ h1 {
   margin-bottom: auto;
 }
 
-#formula-builder-content article:hover {
+#formula-builder-content article:hover,#formula-selector-content article:hover {
   cursor: pointer;
   background: #ffc6ac;
   outline: 2px solid #002a32;
@@ -245,5 +245,16 @@ h1 {
   width:100px;
   height:100px;
 }
+
+#formula-selector-body {
+  display: grid;
+  grid-gap: 0px;
+  grid-template-columns: auto auto;
+  background: #c4a29e;
+}
+
+
+
+
 
 }

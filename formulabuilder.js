@@ -13,20 +13,23 @@ FormulaBuilder = (function() {
   }
 
   var add_var = function(printout, n) {
-    var div=document.createElement("div");
-    div.className="variable-div";
+    var div = document.createElement("div");
+    div.className = "variable-div";
     document.getElementById("var").appendChild(div);
     var img = document.createElement("article");
     img.innerHTML = html_from_formula((new Formula([new Operation("", 0, printout, Operation.VARIABLE)])));
     div.appendChild(img);
-    var modify=document.createElement("button");
-    modify.className="var-mod-button";
+    var modify = document.createElement("button");
+    modify.className = "var-mod-button";
     div.appendChild(modify);
-    modify.innerHTML="X";
-    modify.onclick=function(){
-      printout=prompt("Input variable name in LaTeX",printout);
-      img.innerHTML = html_from_formula((new Formula([new Operation("", 0, printout, Operation.VARIABLE)])));
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    modify.innerHTML = "X";
+    var var_name=printout;
+    modify.onclick = function() {
+      var_name = prompt("Input variable name in LaTeX", printout);
+      if (var_name) {
+        img.innerHTML = html_from_formula((new Formula([new Operation("", 0, var_name, Operation.VARIABLE)])));
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+      }
     };
     img.addEventListener('click', (function(k) {
       return function(e) {
@@ -37,17 +40,17 @@ FormulaBuilder = (function() {
           }
         } else if (fbuilder_formula.body.length > 0 &&
           fbuilder_formula.body[fbuilder_formula.body.length - 1].type === Operation.QUANTOR) {
-          vars[k] = new Operation("var" + k, 0, printout, Operation.VARIABLE);
+          vars[k] = new Operation("var" + k, 0, var_name, Operation.VARIABLE);
           fbuilder_formula.add_op(vars[k]);
           refresh();
-          modify.disabled=true;
+          modify.disabled = true;
         }
       }
     })(n));
   }
-  add_var("x", 0);
-  add_var("y", 1);
-  add_var("z", 2);
+  add_var("a", 0);
+  add_var("b", 1);
+  add_var("c", 2);
 
   var add_op = function(op, local = false, argument = false) {
     var img = document.createElement("article");
@@ -132,9 +135,9 @@ FormulaBuilder = (function() {
     if (vars.length > 0) {
       remove_all_child_nodes(document.getElementById("var"));
       vars = Array();
-      add_var("x", 0);
-      add_var("y", 1);
-      add_var("z", 2);
+      add_var("a", 0);
+      add_var("b", 1);
+      add_var("c", 2);
     }
     remove_all_child_nodes(document.getElementById("arg"));
     if (args.length > 0) {
@@ -153,9 +156,48 @@ FormulaBuilder = (function() {
 
 
 FormulaSelector = (function() {
-  //document.querySelector("#formula-selector").style.display = "block";
   document.querySelector("#formula-selector .close").onclick = function() {
-    document.querySelector("#formula-selector").style.display = "none";
+    close();
   }
-}
-)();
+  var after = function(f) {};
+
+  var remove_all_child_nodes = function(node) {
+    var k = node.childElementCount,
+      i;
+    for (i = 0; i < k - 1; i++) node.removeChild(node.lastChild);
+  }
+
+  var close = function() {
+    document.querySelector("#formula-selector").style.display = "none";
+    remove_all_child_nodes(document.querySelector("#left-to-right"))
+    remove_all_child_nodes(document.querySelector("#right-to-left"))
+  }
+
+  var add_formulas = function(f_list, node) {
+    for (var i in f_list) {
+      var a = document.createElement("article");
+      a.innerHTML = html_from_formula(f_list[i]);
+      node.appendChild(a);
+      a.addEventListener('click', (function(f) {
+        return function(e) {
+          after(f);
+          close();
+        }
+      })(f_list[i]));
+    }
+  }
+
+  var show = function(ltr, rtl, aft) {
+    add_formulas(ltr, document.querySelector("#left-to-right"));
+    add_formulas(rtl, document.querySelector("#right-to-left"));
+    after = aft;
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    document.querySelector("#formula-selector").style.display = "block";
+  }
+
+  return {
+    show: show
+  }
+
+
+})();

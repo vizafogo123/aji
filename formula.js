@@ -102,12 +102,14 @@ function Formula(body) {
     }
     if (Operation.can_follow(parent, op, no_of_child)) {
       if (op.type === Operation.VARIABLE) {
-        if (parent.type === Operation.QUANTOR && no_of_child === 1) {
-          for (var i = 0; i < this.body.length; i++) {
-            if (this.body[i] === op) return false;
+        var p = this.parent_and_no_of_child(this.body.length)[0];
+        if (parent.type === Operation.QUANTOR) {
+          while (p >= 0) {
+            if (this.body[p].type === Operation.QUANTOR && this.body[p + 1] === op) return false;
+            p = this.parent_and_no_of_child(p)[0];
           }
+          if (p < 0) return true;
         } else {
-          var p = this.parent_and_no_of_child(this.body.length)[0];
           while (p >= 0) {
             if (this.body[p].type === Operation.QUANTOR && this.body[p + 1] === op) return true;
             p = this.parent_and_no_of_child(p)[0];
