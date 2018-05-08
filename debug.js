@@ -55,7 +55,7 @@ worlds=[
 
 ];
 
-load_world(worlds[0]);
+load_world(worlds[1]);
 
 ARGUMENTS=[
   new Operation("arg1", 0, "x", Operation.EXPRESSION),

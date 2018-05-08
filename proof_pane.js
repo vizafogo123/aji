@@ -1,16 +1,21 @@
 ProofPane = (function() {
-  document.getElementById("assumption").draggable=false;
-  var img_del=document.getElementById("delete");
+  var is_theorem = function(str) {
+    return str.includes("theo")
+  }
+
+  document.getElementById("assumption").draggable = false;
+  var img_del = document.getElementById("delete");
   img_del.draggable = false;
-  img_del.ondrop=function(event){
+  img_del.ondrop = function(event) {
     event.preventDefault();
-    Proof.remove_request(event.dataTransfer.getData("text"));
+    var s = event.dataTransfer.getData("text")
+    if (!is_theorem(s)) Proof.remove_request(s);
   }
   img_del.ondragover = function(event) {
     event.preventDefault();
   }
 
-  var pr_pane=document.getElementById("proof-pane");
+  var pr_pane = document.getElementById("proof-pane");
   var add_element = function(f, id, assumption = false) {
     var img = document.createElement("article");
     img.innerHTML = html_from_formula(f);
@@ -25,7 +30,12 @@ ProofPane = (function() {
       return function(event) {
         event.preventDefault();
         img.classList.remove("poj");
-        Proof.drag_drop_formula(event.dataTransfer.getData("text"), n);
+        var s = event.dataTransfer.getData("text");
+        if (is_theorem(s)) {
+          Proof.drag_drop_theorem(theorems[s.slice(4)], n);
+        } else {
+          Proof.drag_drop_formula(s, n);
+        }
       }
     })(id)
 
@@ -33,11 +43,11 @@ ProofPane = (function() {
       event.preventDefault();
     }
 
-    img.ondragenter= function(event) {
+    img.ondragenter = function(event) {
       img.classList.add("poj");
     }
 
-    img.ondragleave= function(event) {
+    img.ondragleave = function(event) {
       img.classList.remove("poj");
     }
 
@@ -71,26 +81,30 @@ ProofPane = (function() {
 })();
 
 (function() {
-  var proof_pane = document.getElementById("proof-pane");
+  var theorem_pane = document.getElementById("theorem-pane");
   for (i in theorems) {
     var img = document.createElement("article");
     img.innerHTML = html_from_formula(theorems[i]);
-    document.getElementById("theorem-pane").appendChild(img);
+    theorem_pane.appendChild(img);
     img.onclick = (function(fo) {
       return function() {
         Proof.click_theorem(fo)
       }
     })(theorems[i])
+    img.draggable = true;
+
+    img.ondragstart = (function(n) {
+      return function(event) {
+        event.dataTransfer.setData("text/plain", "theo" + n);
+      }
+    })(i)
+
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 
   }
 
 })()
 
-/*Proof.add_formula(new Formula([FORALL,A,FORALL,B,FORALL,C,IF,EQUALS,PLUS,A,C,PLUS,B,C,EQUALS,A,B]));
-Proof.add_formula(new Formula([EQUALS,PLUS,ZERO,SUC,ZERO,PLUS,SUC,ZERO,SUC,ZERO]));
-Proof.add_formula(new Formula([FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]));
-Proof.add_formula(new Formula([FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]));
-Proof.add_formula(new Formula([FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]));
-Proof.add_formula(new Formula([AND,AND,FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A,FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A,FORALL,A,FORALL,B,EQUALS,TIMES,A,SUC,B,PLUS,TIMES,A,B,A]));
+/*Proof.add_formula(new Formula([FORALL, A, FORALL, B, FORALL, C, IF, EQUALS, PLUS, A, C, PLUS, B, C, EQUALS, A, B]));
+Proof.add_formula(new Formula([EQUALS, TIMES, ZERO, ZERO, ZERO]));
 */

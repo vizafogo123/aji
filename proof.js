@@ -141,56 +141,7 @@ Proof = (function() {
       substitution(f1, f2)
     }
     if (f1.body[0] === FORALL) {
-      var k = 0,
-        vars = Array(),
-        match;
-      while (f1.body[k] === FORALL) {
-        vars.push(f1.body[k + 1]);
-        k = k + 2;
-      }
-      var va = function() {
-        return vars.map(function(op) {
-          return new Formula([op])
-        })
-      }
-      var ded = function(x, y) {
-        match = f2.match_pattern(x, vars);
-        if (match) {
-          add_formula(new Formula(y).substitute_parallel(va(), match));
-          return true;
-        }
-        return false;
-      }
-      if (f1.body[k] === IF) {
-        if (!ded(f1.first_child(k), f1.second_child(k))) ded(negate(f1.second_child(k)), negate(f1.first_child(k)));
-      } else if (f1.body[k] === OR) {
-        if (!ded(negate(f1.first_child(k)), f1.second_child(k))) ded(negate(f1.second_child(k)), f1.first_child(k));
-      } else if (f1.body[k] === EQUI) {
-        if (!ded(f1.first_child(k), f1.second_child(k)))
-          if (!ded(negate(f1.first_child(k)), negate(f1.second_child(k))))
-            if (!ded(f1.second_child(k), f1.first_child(k)))
-              ded(negate(f1.second_child(k)), negate(f1.first_child(k)));
-      } else if (f1.body[k] === EQUALS) {
-        match = f2.match_subpattern(f1.first_child(k), vars);
-        var ltr = Array();
-        for (var i in match) {
-          ltr.push(f2.substitute(new Formula(f1.first_child(k)).substitute_parallel(va(), match[i]),
-            new Formula(f1.second_child(k)).substitute_parallel(va(), match[i])))
-        }
-        match = f2.match_subpattern(f1.second_child(k), vars);
-        var rtl = Array();
-        for (var i in match) {
-          rtl.push(f2.substitute(new Formula(f1.second_child(k)).substitute_parallel(va(), match[i]),
-            new Formula(f1.first_child(k)).substitute_parallel(va(), match[i])))
-        }
-        if (ltr.length + rtl.length === 0) {
-          return
-        } else if (ltr.length + rtl.length === 1) {
-          add_formula(ltr.length === 1 ? ltr[0] : rtl[0])
-        } else FormulaSelector.show(ltr, rtl, function(f) {
-          add_formula(f)
-        });
-      }
+      quick_inst(f1, f2)
     }
   }
 
@@ -267,6 +218,60 @@ Proof = (function() {
     }
   }
 
+  var quick_inst = function(f1, f2) {
+    var k = 0,
+      vars = Array(),
+      match;
+    while (f1.body[k] === FORALL) {
+      vars.push(f1.body[k + 1]);
+      k = k + 2;
+    }
+    var va = function() {
+      return vars.map(function(op) {
+        return new Formula([op])
+      })
+    }
+    var ded = function(x, y) {
+      match = f2.match_pattern(x, vars);
+      if (match) {
+        add_formula(new Formula(y).substitute_parallel(va(), match));
+        return true;
+      }
+      return false;
+    }
+    if (f1.body[k] === IF) {
+      if (!ded(f1.first_child(k), f1.second_child(k))) ded(negate(f1.second_child(k)), negate(f1.first_child(k)));
+    } else if (f1.body[k] === OR) {
+      if (!ded(negate(f1.first_child(k)), f1.second_child(k))) ded(negate(f1.second_child(k)), f1.first_child(k));
+    } else if (f1.body[k] === EQUI) {
+      if (!ded(f1.first_child(k), f1.second_child(k)))
+        if (!ded(negate(f1.first_child(k)), negate(f1.second_child(k))))
+          if (!ded(f1.second_child(k), f1.first_child(k)))
+            ded(negate(f1.second_child(k)), negate(f1.first_child(k)));
+    } else if (f1.body[k] === EQUALS) {
+      match = f2.match_subpattern(f1.first_child(k), vars);
+      var ltr = Array();
+      for (var i in match) {
+        ltr.push(f2.substitute(new Formula(f1.first_child(k)).substitute_parallel(va(), match[i]),
+          new Formula(f1.second_child(k)).substitute_parallel(va(), match[i])))
+      }
+      match = f2.match_subpattern(f1.second_child(k), vars);
+      var rtl = Array();
+      for (var i in match) {
+        rtl.push(f2.substitute(new Formula(f1.second_child(k)).substitute_parallel(va(), match[i]),
+          new Formula(f1.first_child(k)).substitute_parallel(va(), match[i])))
+      }
+      if (ltr.length + rtl.length === 0) {
+        return
+      } else if (ltr.length + rtl.length === 1) {
+        add_formula(ltr.length === 1 ? ltr[0] : rtl[0])
+      } else FormulaSelector.show(ltr, rtl, function(f) {
+        add_formula(f)
+      });
+    }
+
+  }
+
   var make_assumption = function() {
     FormulaBuilder.show(function(f) {
       add_formula(f, ass = true)
@@ -296,6 +301,9 @@ Proof = (function() {
     }
 
   }
+  var drag_drop_theorem = function(f, b) {
+    quick_inst(f, list[b].formula)
+  }
 
   var remove_request = function(n) {
     if (list[n].assumption) {
@@ -311,7 +319,8 @@ Proof = (function() {
     click_theorem: click_theorem,
     add_formula: add_formula, //debug
     make_assumption: make_assumption,
-    remove_request: remove_request
+    remove_request: remove_request,
+    drag_drop_theorem: drag_drop_theorem
   }
 
 })()
