@@ -2,20 +2,20 @@ function cheat_add_formula() {
   FormulaBuilder.show(Proof.add_formula)
 }
 
-A = new Operation("var1", 0, "a", Operation.VARIABLE);
-B = new Operation("var2", 0, "b", Operation.VARIABLE);
-C = new Operation("var3", 0, "c", Operation.VARIABLE);
-EMPTY = new Operation(10, 0, "\\emptyset", Operation.EXPRESSION);
-ZERO = new Operation(101, 0, "0", Operation.EXPRESSION);
-ONE = new Operation(102, 0, "1", Operation.EXPRESSION);
-IN = new Operation(11, 2, "%1 \\in %2", Operation.RELATION);
+A = new Operation("vara", 0, "a", Operation.VARIABLE);
+B = new Operation("varb", 0, "b", Operation.VARIABLE);
+C = new Operation("varc", 0, "c", Operation.VARIABLE);
+EMPTY = new Operation("empty", 0, "\\emptyset", Operation.EXPRESSION);
+ZERO = new Operation("zero", 0, "0", Operation.EXPRESSION);
+ONE = new Operation("one", 0, "1", Operation.EXPRESSION);
+IN = new Operation("in", 2, "%1 \\in %2", Operation.RELATION);
 POK = new Operation("pok", 2, "\\left( %1 \\otimes %2 \\right)", Operation.EXPRESSION);
 PLUS = new Operation("plus", 2, "\\left( %1 + %2 \\right)", Operation.EXPRESSION);
 TIMES = new Operation("times", 2, "\\left( %1 \\cdot %2 \\right)", Operation.EXPRESSION);
 REL1 = new Operation("rel1", 0, "\\phi", Operation.RELATION);
 REL2 = new Operation("rel2", 0, "\\psi", Operation.RELATION);
 REL3 = new Operation("rel2", 0, "\\gamma", Operation.RELATION);
-SUC = new Operation(102, 1, "S %1", Operation.EXPRESSION);
+SUC = new Operation("suc", 1, "S %1", Operation.EXPRESSION);
 REL4 = new Operation("rel2", 1, "\\phi \\left( %1 \\right)", Operation.RELATION);
 //Operation.builtin_operations = Operation.builtin_operations.concat([A, B, C]);
 Operation.local_operations = [];

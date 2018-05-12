@@ -22,6 +22,9 @@ var array_equal = function(a, b) {
   return true;
 }
 
+var is_formula=function(f){
+  return f.start_of_child
+}
 
 function Formula(body) {
   this.body = body;

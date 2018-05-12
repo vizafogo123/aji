@@ -33,17 +33,17 @@ Operation.can_follow = function(parent, child, no_of_child) {
 }
 
 
-FORALL = new Operation(1, 2, "\\forall %1 : \\, %2", Operation.QUANTOR);
-EXISTS = new Operation(2, 2, "\\exists %1 : \\, %2", Operation.QUANTOR);
-UNIQUE = new Operation(3, 2, "\\exists ! %1 : \\, %2", Operation.QUANTOR);
+FORALL = new Operation("forall", 2, "\\forall %1 : \\, %2", Operation.QUANTOR);
+EXISTS = new Operation("exists", 2, "\\exists %1 : \\, %2", Operation.QUANTOR);
+UNIQUE = new Operation("unique", 2, "\\exists ! %1 : \\, %2", Operation.QUANTOR);
 
-IF = new Operation(4, 2, "\\left[ %1 \\rightarrow %2 \\right]",  Operation.LOGICAL);
-EQUI = new Operation(5, 2, "\\left[ %1 \\Leftrightarrow %2 \\right]", Operation.LOGICAL);
-OR = new Operation(6, 2, "\\left[ %1 \\vee %2 \\right]", Operation.LOGICAL);
-AND = new Operation(7, 2, "\\left[ %1 \\wedge %2 \\right]", Operation.LOGICAL);
-NOT = new Operation(8, 1, "\\neg %1", Operation.LOGICAL);
+IF = new Operation("if", 2, "\\left[ %1 \\rightarrow %2 \\right]",  Operation.LOGICAL);
+EQUI = new Operation("equi", 2, "\\left[ %1 \\Leftrightarrow %2 \\right]", Operation.LOGICAL);
+OR = new Operation("or", 2, "\\left[ %1 \\vee %2 \\right]", Operation.LOGICAL);
+AND = new Operation("and", 2, "\\left[ %1 \\wedge %2 \\right]", Operation.LOGICAL);
+NOT = new Operation("not", 1, "\\neg %1", Operation.LOGICAL);
 
-EQUALS = new Operation(9, 2, "%1 = %2", Operation.RELATION);
+EQUALS = new Operation("equals", 2, "%1 = %2", Operation.RELATION);
 
 PLACEHOLDER = new Operation("place", 0, "\\Box", Operation.PLACEHOLDER);
 
