@@ -32,7 +32,7 @@ ProofPane = (function() {
         img.classList.remove("poj");
         var s = event.dataTransfer.getData("text");
         if (is_theorem(s)) {
-          Proof.drag_drop_theorem(theorems[s.slice(4)], n);
+          Proof.drag_drop_theorem(theorems[s.slice(4)].formula, n);
         } else {
           Proof.drag_drop_formula(s, n);
         }
@@ -84,7 +84,7 @@ ProofPane = (function() {
   var theorem_pane = document.getElementById("theorem-pane");
   for (i in theorems) {
     var img = document.createElement("article");
-    img.innerHTML = html_from_formula(theorems[i]);
+    img.innerHTML = html_from_formula(theorems[i].formula);
     theorem_pane.appendChild(img);
     img.onclick = (function(fo) {
       return function() {

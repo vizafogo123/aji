@@ -4,7 +4,7 @@ IO = (function() {
 
     xhttp.onreadystatechange = function() {
       if (xhttp.readyState == 4 && xhttp.status == 200) {
-        daj=JSON.parse(xhttp.responseText);
+        daj = JSON.parse(xhttp.responseText);
       }
     };
     xhttp.open("GET", "http://127.0.0.1:3000/?file=a.json", true);
@@ -29,17 +29,53 @@ IO = (function() {
 
 })();
 
+var op_from_json = function(json) {
+  return new Operation(json.id, json.no_of_args, json.print_scheme, json.type)
+}
+
+var theorem_from_json = function(json) {
+  var vars = Object();
+  var res=Object();
+  var f = Array();
+  var ops=Operation.builtin_operations.concat(Operation.global_operations);
+  if (json.schema){
+    var sch=json.schema.map(op_from_json);
+    ops=ops.concat(sch);
+    res.schema=sch;
+  }
+  for (i in json.formula) {
+    if (json.formula[i].slice(0, 3) === "var") {
+      if (!vars[json.formula[i]])
+        vars[json.formula[i]] = new Operation(json.formula[i], 0, json.formula[i].slice(3), Operation.VARIABLE);
+      f.push(vars[json.formula[i]]);
+    } else {
+      f.push(ops.find(function(x){return x.id===json.formula[i]}));
+    }
+  }
+  res.formula=new Formula(f);
+  return res;
+}
 
 function replacer(key, value) {
   if (is_formula(value)) {
-      return value.body.map(function(x){return x.id})
+    return value.body.map(function(x) {
+      return x.id
+    })
   }
   return value;
 }
 
+str = JSON.parse(JSON.stringify(theorems[5], replacer));
+console.log(theorem_from_json(str));
+console.log(JSON.parse(JSON.stringify(theorems[5], replacer)));
+//console.log(JSON.stringify(theorems,replacer));
+var json = JSON.stringify(theorems, replacer);
 
-console.log(JSON.stringify(theorems,replacer));
-var json=JSON.stringify(Operation.global_operations);
-
-//IO.save(json);
+IO.save(json);
 //IO.load();
+/*
+var ops=Array();
+for (i in str){
+  ops.push(op_from_json(str[i]))
+}
+*/

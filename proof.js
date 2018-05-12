@@ -293,10 +293,10 @@ Proof = (function() {
 
   var click_theorem = function(th) {
     if (!th.schema) {
-      add_formula(th);
+      add_formula(th.formula);
     } else {
       FormulaBuilder.show(function(f) {
-        add_formula(th.substitute_definition(new Formula([th.schema[0]].concat(ARGUMENTS.slice(0, 1))), f))
+        add_formula(th.formula.substitute_definition(new Formula([th.schema[0]].concat(ARGUMENTS.slice(0, 1))), f))
       }, mod = 'rel', args = ARGUMENTS.slice(0, 1))
     }
 
