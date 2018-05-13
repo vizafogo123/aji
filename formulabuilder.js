@@ -23,7 +23,7 @@ FormulaBuilder = (function() {
     modify.className = "var-mod-button";
     div.appendChild(modify);
     modify.innerHTML = "X";
-    var var_name=printout;
+    var var_name = printout;
     modify.onclick = function() {
       var_name = prompt("Input variable name in LaTeX", printout);
       if (var_name) {
@@ -40,7 +40,7 @@ FormulaBuilder = (function() {
           }
         } else if (fbuilder_formula.body.length > 0 &&
           fbuilder_formula.body[fbuilder_formula.body.length - 1].type === Operation.QUANTOR) {
-          vars[k] = new Operation("var" + k, 0, var_name, Operation.VARIABLE);
+          vars[k] = new Operation("var" + var_name, 0, var_name, Operation.VARIABLE);
           fbuilder_formula.add_op(vars[k]);
           refresh();
           modify.disabled = true;
@@ -48,9 +48,6 @@ FormulaBuilder = (function() {
       }
     })(n));
   }
-  add_var("a", 0);
-  add_var("b", 1);
-  add_var("c", 2);
 
   var add_op = function(op, local = false, argument = false) {
     var img = document.createElement("article");
@@ -81,7 +78,6 @@ FormulaBuilder = (function() {
       add_op(ops[i]);
     }
   }
-  add_globals();
 
   var refresh_locals = function() {
     remove_all_child_nodes(document.getElementById("loc"));
@@ -91,7 +87,6 @@ FormulaBuilder = (function() {
     }
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
-  refresh_locals();
 
   var close = function() {
     fbuilder_formula.body = [];
@@ -127,7 +122,15 @@ FormulaBuilder = (function() {
     button_backspace.disabled = fbuilder_formula.body.length === 0;
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
-  refresh();
+
+  var init = function() {
+    add_globals();
+    add_var("a", 0);
+    add_var("b", 1);
+    add_var("c", 2);
+    refresh();
+    //refresh_locals();
+  }
 
   var show = function(a, mod = 'rel', args = []) {
     mode = mod;
@@ -148,6 +151,7 @@ FormulaBuilder = (function() {
   }
 
   return {
+    init: init,
     show: show,
     refresh_locals: refresh_locals
   }

@@ -313,6 +313,22 @@ Proof = (function() {
     remove_formula(n);
   }
 
+  var save_request = function() {
+    var l = Object.keys(list);
+    if (l.length === 0) return;
+    for (var i in l) {
+      if (list[l[i]].assumption) return;
+    }
+    var f = list[l[l.length - 1]];
+    for (var i in f.formula.body) {
+      if (f.formula.body[i].id.slice(0,5)==="local") return;
+    }
+    theorems.push({
+      formula: f.formula
+    });
+    IO.save();
+  }
+
   return {
     click_formula: click_formula,
     drag_drop_formula: drag_drop_formula,
@@ -320,6 +336,7 @@ Proof = (function() {
     add_formula: add_formula, //debug
     make_assumption: make_assumption,
     remove_request: remove_request,
+    save_request: save_request,
     drag_drop_theorem: drag_drop_theorem
   }
 

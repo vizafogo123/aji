@@ -80,31 +80,33 @@ ProofPane = (function() {
 
 })();
 
-(function() {
+TheoremPane = (function() {
   var theorem_pane = document.getElementById("theorem-pane");
-  for (i in theorems) {
-    var img = document.createElement("article");
-    img.innerHTML = html_from_formula(theorems[i].formula);
-    theorem_pane.appendChild(img);
-    img.onclick = (function(fo) {
-      return function() {
-        Proof.click_theorem(fo)
-      }
-    })(theorems[i])
-    img.draggable = true;
+  var init = function() {
+    for (i in theorems) {
+      var img = document.createElement("article");
+      img.innerHTML = html_from_formula(theorems[i].formula);
+      theorem_pane.appendChild(img);
+      img.onclick = (function(fo) {
+        return function() {
+          Proof.click_theorem(fo)
+        }
+      })(theorems[i])
+      img.draggable = true;
 
-    img.ondragstart = (function(n) {
-      return function(event) {
-        event.dataTransfer.setData("text/plain", "theo" + n);
-      }
-    })(i)
+      img.ondragstart = (function(n) {
+        return function(event) {
+          event.dataTransfer.setData("text/plain", "theo" + n);
+        }
+      })(i)
 
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 
+    }
+  }
+
+  return {
+    init: init
   }
 
 })()
-
-/*Proof.add_formula(new Formula([FORALL, A, FORALL, B, FORALL, C, IF, EQUALS, PLUS, A, C, PLUS, B, C, EQUALS, A, B]));
-Proof.add_formula(new Formula([EQUALS, TIMES, ZERO, ZERO, ZERO]));
-*/
