@@ -5,6 +5,10 @@ FormulaBuilder = (function() {
   var after = function(f) {};
   var fbuilder_formula = new Formula([]);
   var vars = Array();
+  var vars2 = Array();
+  var no_of_vars = 0;
+  var default_vars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"];
+  var forb_vs = Array();
 
   var remove_all_child_nodes = function(node) {
     var k = node.childElementCount,
@@ -12,7 +16,8 @@ FormulaBuilder = (function() {
     for (i = 0; i < k - 1; i++) node.removeChild(node.lastChild);
   }
 
-  var add_var = function(printout, n) {
+  var add_var = function(printout) {
+    vars2.push(printout);
     var div = document.createElement("div");
     div.className = "variable-div";
     document.getElementById("var").appendChild(div);
@@ -46,7 +51,26 @@ FormulaBuilder = (function() {
           modify.disabled = true;
         }
       }
-    })(n));
+    })(no_of_vars));
+    no_of_vars++;
+  }
+
+  var add_new_var = function() {
+    for (var i = 0; i < default_vars.length; i++) {
+      if (!vars2.concat(forb_vs).includes(default_vars[i])) {
+        add_var(default_vars[i]);
+        return;
+      }
+    }
+  }
+
+  var reset_vars = function() {
+    remove_all_child_nodes(document.getElementById("var"));
+    vars = Array();
+    vars2 = Array();
+    add_new_var();
+    add_new_var();
+    add_new_var();
   }
 
   var add_op = function(op, local = false, argument = false) {
@@ -125,23 +149,21 @@ FormulaBuilder = (function() {
 
   var init = function() {
     add_globals();
-    add_var("a", 0);
-    add_var("b", 1);
-    add_var("c", 2);
+    reset_vars();
+    document.getElementById("more-var-btn").onclick = function() {
+      add_new_var();
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    };
     refresh();
     //refresh_locals();
   }
 
-  var show = function(a, mod = 'rel', args = []) {
+  var show = function(a, mod = 'rel', args = Array(), forb_vars = Array()) {
     mode = mod;
     after = a;
-    if (vars.length > 0) {
-      remove_all_child_nodes(document.getElementById("var"));
-      vars = Array();
-      add_var("a", 0);
-      add_var("b", 1);
-      add_var("c", 2);
-    }
+    no_of_vars = 0;
+    forb_vs = forb_vars;
+    reset_vars();
     remove_all_child_nodes(document.getElementById("arg"));
     if (args.length > 0) {
       for (var i in args) add_op(args[i], local = false, argument = true);

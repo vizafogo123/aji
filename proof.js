@@ -295,9 +295,12 @@ Proof = (function() {
     if (!th.schema) {
       add_formula(th.formula);
     } else {
+      var forb_vars=Array();
+      for (i in th.formula.body) if (th.formula.body[i].type===Operation.VARIABLE)
+        if (!forb_vars.includes(th.formula.body[i].print_scheme)) forb_vars.push(th.formula.body[i].print_scheme)
       FormulaBuilder.show(function(f) {
         add_formula(th.formula.substitute_definition(new Formula([th.schema[0]].concat(ARGUMENTS.slice(0, 1))), f))
-      }, mod = 'rel', args = ARGUMENTS.slice(0, 1))
+      }, mod = 'rel', args = ARGUMENTS.slice(0, 1),forb_vars=forb_vars)
     }
 
   }
