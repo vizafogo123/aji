@@ -61,7 +61,7 @@ Proof = (function() {
 
     var get_new_op = function() {
       var variable, identifier = "local" + Operation.local_operations.length,
-        tries = [f.body[1].print_scheme, "a", "b", "c", "d", "e", "f", "g", "h"],
+        tries = [f.body[1].print_scheme, "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"],
         op = new Operation(identifier, 0, "", Operation.EXPRESSION),
         schemes = Operation.local_operations.map(function(x) {
           return x.print_scheme
@@ -79,6 +79,15 @@ Proof = (function() {
       return op;
     }
 
+    var get_new_var = function(bod) {
+      var tries = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"],
+        schemes = bod.map(function(x) {
+          return x.print_scheme
+        });
+      var i = 0;
+      while (schemes.includes(tries[i])) i++;
+      return new Operation("var" + tries[i], 0, tries[i], Operation.VARIABLE);
+    }
     if (f.body[0] === FORALL) {
       FormulaBuilder.show(function(x) {
         add_formula((new Formula(f.body.slice(2))).substitute(new Formula([f.body[1]]), x))
@@ -88,6 +97,11 @@ Proof = (function() {
       Operation.local_operations.push(op);
       add_or_modify(new Formula(f.body.slice(2)).substitute(new Formula([f.body[1]]), new Formula([op])));
       FormulaBuilder.refresh_locals();
+    } else if (f.body[0] === UNIQUE) {
+      var var1=f.body[1],var2=get_new_var(f.body);
+      add_formula(new Formula([EXISTS,var1,AND].concat(f.second_child(0)).concat([FORALL,var2,IF])
+          .concat((new Formula(f.second_child(0)).substitute(new Formula([var1]), new Formula([var2]))).body)
+          .concat([EQUALS,var2,var1])));
     } else if (f.body[0] === AND) {
       add_formula(new Formula(f.first_child(0)));
       add_formula(new Formula(f.second_child(0)));
@@ -113,6 +127,13 @@ Proof = (function() {
         add_or_modify(new Formula([EXISTS, f.body[2], NOT].concat(f.body.slice(3))));
       } else if (f.body[1] === EXISTS) {
         add_or_modify(new Formula([FORALL, f.body[2], NOT].concat(f.body.slice(3))));
+      } else if (f.body[1] === UNIQUE) {
+        var var1=f.body[2],var2=get_new_var(f.body),var3=get_new_var(f.body.concat([var2]));
+        //console.log(var1,var2);
+        add_formula(new Formula([OR,NOT,EXISTS].concat(f.body.slice(2)).concat([EXISTS,var2,EXISTS,var3,AND,AND])
+            .concat((new Formula(f.second_child(1)).substitute(new Formula([var1]), new Formula([var2]))).body)
+            .concat((new Formula(f.second_child(1)).substitute(new Formula([var1]), new Formula([var3]))).body)
+            .concat([NOT,EQUALS,var2,var3])));
       } else if (f.body[1] === EQUALS) {
         if (array_equal(f.second_child(1), f.first_child(1))) {
           contradiction();
@@ -159,7 +180,9 @@ Proof = (function() {
     };
     var add_or_modify = function() {
       return (!list[a].assumption && a_higher_than_b() ? function(f) {
-        modify_formula(a, f)
+        //modify_formula(a, f);
+        remove_formula(a);
+        add_formula(f);
       } : add_formula)
     };
 
@@ -295,12 +318,13 @@ Proof = (function() {
     if (!th.schema) {
       add_formula(th.formula);
     } else {
-      var forb_vars=Array();
-      for (i in th.formula.body) if (th.formula.body[i].type===Operation.VARIABLE)
-        if (!forb_vars.includes(th.formula.body[i].print_scheme)) forb_vars.push(th.formula.body[i].print_scheme)
+      var forb_vars = Array();
+      for (i in th.formula.body)
+        if (th.formula.body[i].type === Operation.VARIABLE)
+          if (!forb_vars.includes(th.formula.body[i].print_scheme)) forb_vars.push(th.formula.body[i].print_scheme)
       FormulaBuilder.show(function(f) {
         add_formula(th.formula.substitute_definition(new Formula([th.schema[0]].concat(ARGUMENTS.slice(0, 1))), f))
-      }, mod = 'rel', args = ARGUMENTS.slice(0, 1),forb_vars=forb_vars)
+      }, mod = 'rel', args = ARGUMENTS.slice(0, 1), forb_vars = forb_vars)
     }
 
   }
@@ -324,7 +348,7 @@ Proof = (function() {
     }
     var f = list[l[l.length - 1]];
     for (var i in f.formula.body) {
-      if (f.formula.body[i].id.slice(0,5)==="local") return;
+      if (f.formula.body[i].id.slice(0, 5) === "local") return;
     }
     theorems.push({
       formula: f.formula

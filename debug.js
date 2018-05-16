@@ -16,7 +16,11 @@ REL1 = new Operation("rel1", 0, "\\phi", Operation.RELATION);
 REL2 = new Operation("rel2", 0, "\\psi", Operation.RELATION);
 REL3 = new Operation("rel2", 0, "\\gamma", Operation.RELATION);
 SUC = new Operation("suc", 1, "S %1", Operation.EXPRESSION);
-REL4 = new Operation("rel2", 1, "\\phi \\left( %1 \\right)", Operation.RELATION);
+REL4 = new Operation("rel2", 1, "\\color{#AA0000} \\phi \\left( %1 \\right)", Operation.RELATION);
+POWER = new Operation("power", 1, "\\cal P \\left( %1 \\right)", Operation.EXPRESSION);
+UNION = new Operation("union", 1, "\\bigcup %1", Operation.EXPRESSION);
+
+
 //Operation.builtin_operations = Operation.builtin_operations.concat([A, B, C]);
 Operation.local_operations = [];
 theorems = [];
@@ -31,6 +35,10 @@ add_schemas_to_formula = function(f, schemas) {
 }
 
 worlds = [{
+    operations: [REL1, REL2, REL3],
+    theorems: []
+  },
+  {
     operations: [TIMES, ONE],
     theorems: [{
         formula: new Formula([FORALL, A, EQUALS, TIMES, A, A, ONE])
@@ -68,6 +76,26 @@ worlds = [{
       },
       {
         formula: new Formula([IF, AND, REL4, ZERO, FORALL, A, IF, REL4, A, REL4, SUC, A, FORALL, A, REL4, A]),
+        schema: [REL4]
+      }
+    ]
+  },
+  {
+    operations: [IN, EMPTY],
+    theorems: [{
+        formula: new Formula([FORALL, A, FORALL, B, IF, FORALL, C, EQUI, IN, C, A, IN, C, B, EQUALS, A, B])
+      },
+      {
+        formula: new Formula([FORALL,A,IF,NOT,EQUALS,A,EMPTY,EXISTS,B,NOT,EXISTS,C,AND,IN,C,B,IN,C,A])
+      },
+      {
+        formula: new Formula([FORALL,A,FORALL,B,EQUI,IN,B,POWER,A,FORALL,C,IF,IN,C,B,IN,C,A])
+      },
+      {
+        formula: new Formula([FORALL,A,FORALL,B,EQUI,IN,B,UNION,A,EXISTS,C,AND,IN,B,C,IN,C,A])
+      },
+      {
+        formula: new Formula([FORALL,A,UNIQUE,B,FORALL,C,EQUI,IN,C,B,AND,IN,C,A,REL4,C]),
         schema: [REL4]
       }
     ]
