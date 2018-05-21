@@ -81,7 +81,7 @@ worlds = [{
     ]
   },
   {
-    operations: [IN, EMPTY],
+    operations: [IN, EMPTY,POWER,UNION],
     theorems: [{
         formula: new Formula([FORALL, A, FORALL, B, IF, FORALL, C, EQUI, IN, C, A, IN, C, B, EQUALS, A, B])
       },

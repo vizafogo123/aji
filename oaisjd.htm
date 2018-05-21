@@ -11,6 +11,7 @@
 </head>
 
 <body>
+
   <div id="main">
     <div id="proof-pane">
       <input type="button" value="Cheat add" onclick="cheat_add_formula();" />
@@ -20,6 +21,7 @@
     <div id="theorem-pane">
     </div>
   </div>
+
   <div id="formula-builder" class="modal">
     <div id="formula-builder-content" class="modal-content">
       <div id="formula-builder-header" class="modal-header">
@@ -62,6 +64,7 @@
       </div>
     </div>
   </div>
+
   <div id="formula-selector" class="modal">
     <div id="formula-selector-content" class="modal-content">
       <div id="formula-selector-header" class="modal-header">
@@ -76,6 +79,37 @@
       </div>
     </div>
   </div>
+
+  <div id="new-def" class="modal">
+    <div id="new-def-content" class="modal-content">
+      <div id="new-def-header" class="modal-header">
+        <span class="close">×</span>
+        <h2>New definition</h2>
+      </div>
+      <div id="new-def-body" class="modal-body">
+        Type:
+        <select id="def-type">
+          <option value="rel" selected>Relation</option>
+          <option value="exp">Expression</option>
+        </select>
+        Number of arguments:
+        <select id="no-of-args">
+          <option value="0" selected>0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+        Print scheme:
+        <input id="print-scheme" type="text" value="" />
+        <input id="give-def" type="button" value="Give definition" />
+        <div id="def-formula"></div>
+        <input id="def-done" type="button" value="Done" />
+      </div>
+      <div id="new-def-footer" class="modal-footer">
+      </div>
+    </div>
+  </div>
+
 </body>
 <script src="sas.js"></script>
 <script src="formula.js"></script>
@@ -83,6 +117,7 @@
 <script src="debug.js"></script>
 <script src="formulabuilder.js"></script>
 <script src="proof_pane.js"></script>
+<script src="def_windows.js"></script>
 <script src="io.js"></script>
 <!--<script src="test.js"></script>-->
 

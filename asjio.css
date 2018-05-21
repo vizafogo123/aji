@@ -253,8 +253,12 @@ h1 {
   background: #c4a29e;
 }
 
-
-
+#formula-builder{
+  z-index: 2
+}
+#new-def{
+  z-index: 1
+}
 
 
 }

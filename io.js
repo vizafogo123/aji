@@ -78,10 +78,9 @@ IO = (function() {
 
 })();
 
-//IO.load();
+IO.load();
 
-load_world(worlds[3]);
+/*load_world(worlds[3]);
 TheoremPane.init();
 FormulaBuilder.init();
-
-//IO.load();
+*/
