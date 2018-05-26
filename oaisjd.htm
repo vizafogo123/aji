@@ -19,6 +19,10 @@
       <img id="delete" src="img\delete.svg">
     </div>
     <div id="theorem-pane">
+      <select id="folder-selector">
+      </select>
+      <div id="theorems">
+      </div>
     </div>
   </div>
 
@@ -72,8 +76,10 @@
         <h2>Select formula</h2>
       </div>
       <div id="formula-selector-body" class="modal-body">
-        <div id="left-to-right"><h1>left-to-right</h1></div>
-        <div id="right-to-left"><h1>right-to-left</h1></div>
+        <div id="left-to-right">
+          <h1>left-to-right</h1></div>
+        <div id="right-to-left">
+          <h1>right-to-left</h1></div>
       </div>
       <div id="formula-selector-footer" class="modal-footer">
       </div>
@@ -91,15 +97,13 @@
         <select id="def-type">
           <option value="rel" selected>Relation</option>
           <option value="exp">Expression</option>
-        </select>
-        Number of arguments:
+        </select> Number of arguments:
         <select id="no-of-args">
           <option value="0" selected>0</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
-        </select>
-        Print scheme:
+        </select> Print scheme:
         <input id="print-scheme" type="text" value="" />
         <input id="give-def" type="button" value="Give definition" />
         <div id="def-formula"></div>
@@ -110,7 +114,25 @@
     </div>
   </div>
 
+  <div id="theorem-manager" class="modal">
+    <div id="theorem-manager-content" class="modal-content">
+      <div id="theorem-manager-header" class="modal-header">
+        <span class="close">×</span>
+        <h2>Select formula</h2>
+      </div>
+      <div id="theorem-manager-body" class="modal-body">
+        <h1>theorem</h1>
+        <h1>folder</h1>
+        <h1>hidden</h1>
+        <h1>create definition</h1>
+      </div>
+      <div id="theorem-manager-footer" class="modal-footer">
+      </div>
+    </div>
+  </div>
+
 </body>
+
 <script src="sas.js"></script>
 <script src="formula.js"></script>
 <script src="proof.js"></script>
@@ -118,6 +140,7 @@
 <script src="formulabuilder.js"></script>
 <script src="proof_pane.js"></script>
 <script src="def_windows.js"></script>
+<script src="th_manager.js"></script>
 <script src="io.js"></script>
 <!--<script src="test.js"></script>-->
 

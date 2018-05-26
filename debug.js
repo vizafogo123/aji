@@ -83,20 +83,25 @@ worlds = [{
   {
     operations: [IN, EMPTY,POWER,UNION],
     theorems: [{
-        formula: new Formula([FORALL, A, FORALL, B, IF, FORALL, C, EQUI, IN, C, A, IN, C, B, EQUALS, A, B])
+        formula: new Formula([FORALL, A, FORALL, B, IF, FORALL, C, EQUI, IN, C, A, IN, C, B, EQUALS, A, B]),
+        folder:"a"
       },
       {
-        formula: new Formula([FORALL,A,IF,NOT,EQUALS,A,EMPTY,EXISTS,B,NOT,EXISTS,C,AND,IN,C,B,IN,C,A])
+        formula: new Formula([FORALL,A,IF,NOT,EQUALS,A,EMPTY,EXISTS,B,NOT,EXISTS,C,AND,IN,C,B,IN,C,A]),
+        folder:"b"
       },
       {
-        formula: new Formula([FORALL,A,FORALL,B,EQUI,IN,B,POWER,A,FORALL,C,IF,IN,C,B,IN,C,A])
+        formula: new Formula([FORALL,A,FORALL,B,EQUI,IN,B,POWER,A,FORALL,C,IF,IN,C,B,IN,C,A]),
+        folder:"c"
       },
       {
-        formula: new Formula([FORALL,A,FORALL,B,EQUI,IN,B,UNION,A,EXISTS,C,AND,IN,B,C,IN,C,A])
+        formula: new Formula([FORALL,A,FORALL,B,EQUI,IN,B,UNION,A,EXISTS,C,AND,IN,B,C,IN,C,A]),
+        folder:"b"
       },
       {
         formula: new Formula([FORALL,A,UNIQUE,B,FORALL,C,EQUI,IN,C,B,AND,IN,C,A,REL4,C]),
-        schema: [REL4]
+        schema: [REL4],
+        folder:"a"
       }
     ]
   }
