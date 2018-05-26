@@ -98,10 +98,11 @@ Proof = (function() {
       add_or_modify(new Formula(f.body.slice(2)).substitute(new Formula([f.body[1]]), new Formula([op])));
       FormulaBuilder.refresh_locals();
     } else if (f.body[0] === UNIQUE) {
-      var var1=f.body[1],var2=get_new_var(f.body);
-      add_formula(new Formula([EXISTS,var1,AND].concat(f.second_child(0)).concat([FORALL,var2,IF])
-          .concat((new Formula(f.second_child(0)).substitute(new Formula([var1]), new Formula([var2]))).body)
-          .concat([EQUALS,var2,var1])));
+      var var1 = f.body[1],
+        var2 = get_new_var(f.body);
+      add_formula(new Formula([EXISTS, var1, AND].concat(f.second_child(0)).concat([FORALL, var2, IF])
+        .concat((new Formula(f.second_child(0)).substitute(new Formula([var1]), new Formula([var2]))).body)
+        .concat([EQUALS, var2, var1])));
     } else if (f.body[0] === AND) {
       add_formula(new Formula(f.first_child(0)));
       add_formula(new Formula(f.second_child(0)));
@@ -128,12 +129,14 @@ Proof = (function() {
       } else if (f.body[1] === EXISTS) {
         add_or_modify(new Formula([FORALL, f.body[2], NOT].concat(f.body.slice(3))));
       } else if (f.body[1] === UNIQUE) {
-        var var1=f.body[2],var2=get_new_var(f.body),var3=get_new_var(f.body.concat([var2]));
+        var var1 = f.body[2],
+          var2 = get_new_var(f.body),
+          var3 = get_new_var(f.body.concat([var2]));
         //console.log(var1,var2);
-        add_formula(new Formula([OR,NOT,EXISTS].concat(f.body.slice(2)).concat([EXISTS,var2,EXISTS,var3,AND,AND])
-            .concat((new Formula(f.second_child(1)).substitute(new Formula([var1]), new Formula([var2]))).body)
-            .concat((new Formula(f.second_child(1)).substitute(new Formula([var1]), new Formula([var3]))).body)
-            .concat([NOT,EQUALS,var2,var3])));
+        add_formula(new Formula([OR, NOT, EXISTS].concat(f.body.slice(2)).concat([EXISTS, var2, EXISTS, var3, AND, AND])
+          .concat((new Formula(f.second_child(1)).substitute(new Formula([var1]), new Formula([var2]))).body)
+          .concat((new Formula(f.second_child(1)).substitute(new Formula([var1]), new Formula([var3]))).body)
+          .concat([NOT, EQUALS, var2, var3])));
       } else if (f.body[1] === EQUALS) {
         if (array_equal(f.second_child(1), f.first_child(1))) {
           contradiction();
@@ -340,7 +343,7 @@ Proof = (function() {
     remove_formula(n);
   }
 
-  var save_request = function() {
+  var save_request = function(folder) {
     var l = Object.keys(list);
     if (l.length === 0) return;
     for (var i in l) {
@@ -351,7 +354,8 @@ Proof = (function() {
       if (f.formula.body[i].id.slice(0, 5) === "local") return;
     }
     theorems.push({
-      formula: f.formula
+      formula: f.formula,
+      folder: folder
     });
     IO.save();
   }

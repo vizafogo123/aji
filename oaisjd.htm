@@ -14,7 +14,10 @@
 
   <div id="main">
     <div id="proof-pane">
-      <input type="button" value="Cheat add" onclick="cheat_add_formula();" />
+      <input type="button" value="Cheat add" onclick="cheat_add_formula();" style="display:none"/>
+      <input type="button" value="Save" onclick="TheoremPane.save_request();" />
+      <input type="button" value="New def" onclick="NewDefWindow.show();" />
+      <input type="button" value="Theorem manager" onclick="TheoremManager.show();" />
       <img id="assumption" src="img\assumption.svg" onclick="Proof.make_assumption();">
       <img id="delete" src="img\delete.svg">
     </div>
@@ -118,7 +121,7 @@
     <div id="theorem-manager-content" class="modal-content">
       <div id="theorem-manager-header" class="modal-header">
         <span class="close">×</span>
-        <h2>Select formula</h2>
+        <h2>Theorems</h2>
       </div>
       <div id="theorem-manager-body" class="modal-body">
         <h1>theorem</h1>
@@ -127,6 +130,8 @@
         <h1>create definition</h1>
       </div>
       <div id="theorem-manager-footer" class="modal-footer">
+        <button id="th-man-cancel">cancel</button>
+        <button id="th-man-done">done</button>
       </div>
     </div>
   </div>

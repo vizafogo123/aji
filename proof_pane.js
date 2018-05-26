@@ -82,8 +82,8 @@ ProofPane = (function() {
 
 TheoremPane = (function() {
   var theorems_div = document.getElementById("theorems");
+  var fsel = document.getElementById("folder-selector");
   var init = function() {
-    var fsel = document.getElementById("folder-selector");
     var folders = [];
     for (var i in theorems) {
       if (!folders.includes(theorems[i].folder)) {
@@ -104,7 +104,6 @@ TheoremPane = (function() {
     for (i in theorems) {
       var img = document.createElement("article");
       img.innerHTML = html_from_formula(theorems[i].formula);
-      //theorem_pane.appendChild(img);
       document.getElementById("th_div_" + theorems[i].folder).appendChild(img);
 
       img.onclick = (function(the) {
@@ -138,8 +137,13 @@ TheoremPane = (function() {
 
   }
 
+  var save_request=function(){
+    Proof.save_request(fsel.value);
+  }
+
   return {
-    init: init
+    init: init,
+    save_request:save_request
   }
 
 })()

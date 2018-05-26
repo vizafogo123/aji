@@ -34,6 +34,7 @@ IO = (function() {
       }
     }
     res.formula = new Formula(f);
+    res.folder=json.folder;
     return res;
   }
 
@@ -50,6 +51,7 @@ IO = (function() {
         load_data(JSON.parse(xhttp.responseText));
         TheoremPane.init();
         FormulaBuilder.init();
+        TheoremManager.init();
       }
     };
     xhttp.open("GET", "http://127.0.0.1:3000/?file=a.json", true);
@@ -78,8 +80,9 @@ IO = (function() {
 
 })();
 
-//IO.load();
+IO.load();
 
-load_world(worlds[3]);
+/*load_world(worlds[3]);
 TheoremPane.init();
 FormulaBuilder.init();
+TheoremManager.init();*/

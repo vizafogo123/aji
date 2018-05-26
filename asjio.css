@@ -269,6 +269,31 @@ h1 {
   grid-gap: 0px;
   grid-template-columns: auto auto auto auto;
   background: #c4a29e;
+  text-align: center;
+  padding-bottom:50px;
+}
+
+#theorem-manager-footer {
+  padding: 2px 16px;
+  background-color: #f40076;
+  color: black;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+#theorem-manager-footer button {
+  height: 40px;
+  width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#theorem-manager-body div:nth-child(4n+6):hover {
+  background: #ffc6ac;
+  cursor: pointer;
+  outline: 2px solid #002a32;
 }
 
 }

@@ -64,7 +64,7 @@ NewDefWindow=(function(){
     //document.querySelector("#def-formula").innerHTML=html_from_formula(f);
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     Operation.global_operations.push(op);
-    theorems.push({formula:f});
+    theorems.push({formula:f,folder:"(base)"});
     IO.save();
   };
 
