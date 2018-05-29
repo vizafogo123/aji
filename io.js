@@ -35,6 +35,7 @@ IO = (function() {
     }
     res.formula = new Formula(f);
     res.folder=json.folder;
+    res.hidden=json.hidden;
     return res;
   }
 
@@ -52,6 +53,7 @@ IO = (function() {
         TheoremPane.init();
         FormulaBuilder.init();
         TheoremManager.init();
+        NewDefWindow.init();
       }
     };
     xhttp.open("GET", "http://127.0.0.1:3000/?file=a.json", true);

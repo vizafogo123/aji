@@ -23,6 +23,7 @@ var array_equal = function(a, b) {
 }
 
 var is_formula=function(f){
+  if (!f) return false;
   return f.start_of_child
 }
 

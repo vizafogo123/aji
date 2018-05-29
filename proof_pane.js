@@ -86,7 +86,7 @@ TheoremPane = (function() {
   var init = function() {
     var folders = [];
     for (var i in theorems) {
-      if (!folders.includes(theorems[i].folder)) {
+      if (!theorems[i].hidden && !folders.includes(theorems[i].folder)) {
         folders.push(theorems[i].folder);
         var option = document.createElement("option");
         option.text = theorems[i].folder;
@@ -102,25 +102,26 @@ TheoremPane = (function() {
     var th_divs = document.querySelectorAll("#theorems div");
 
     for (i in theorems) {
-      var img = document.createElement("article");
-      img.innerHTML = html_from_formula(theorems[i].formula);
-      document.getElementById("th_div_" + theorems[i].folder).appendChild(img);
+      if (!theorems[i].hidden){
+        var img = document.createElement("article");
+        img.innerHTML = html_from_formula(theorems[i].formula);
+        document.getElementById("th_div_" + theorems[i].folder).appendChild(img);
 
-      img.onclick = (function(the) {
-        return function() {
-          Proof.click_theorem(the)
-        }
-      })(theorems[i])
-      img.draggable = true;
+        img.onclick = (function(the) {
+          return function() {
+            Proof.click_theorem(the)
+          }
+        })(theorems[i])
+        img.draggable = true;
 
-      img.ondragstart = (function(n) {
-        return function(event) {
-          event.dataTransfer.setData("text/plain", "theo" + n);
-        }
-      })(i)
+        img.ondragstart = (function(n) {
+          return function(event) {
+            event.dataTransfer.setData("text/plain", "theo" + n);
+          }
+        })(i)
 
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+      }
     }
 
     var show_nth_div = function(n) {
