@@ -173,6 +173,14 @@ DefManager = (function() {
   }
 
   document.querySelector("#def-man-done").onclick = function() {
+    var c = document.querySelectorAll("#def-manager-body div:nth-child(6n+10)");
+    var checkboxes = document.querySelectorAll("#def-manager-body input");
+    for (i in Operation.global_operations) {
+      Operation.global_operations[i].print_scheme = c[i].innerHTML;
+      Operation.global_operations[i].hidden = checkboxes[i].checked;
+    }
+    document.querySelector("#def-manager").style.display = "none";
+    IO.save();
   }
 
   return {

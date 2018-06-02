@@ -9,7 +9,9 @@ IO = (function() {
   }
 
   var op_from_json = function(json) {
-    return new Operation(json.id, json.no_of_args, json.print_scheme, json.type)
+    var op=new Operation(json.id, json.no_of_args, json.print_scheme, json.type);
+    op.hidden=json.hidden;
+    return op
   }
 
   var theorem_from_json = function(json) {

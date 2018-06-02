@@ -97,7 +97,7 @@ FormulaBuilder = (function() {
   }
 
   var add_globals = function() {
-    var ops = Operation.builtin_operations.concat(Operation.global_operations);
+    var ops = Operation.builtin_operations.concat(Operation.global_operations.filter(function(x){return !x.hidden}));
     for (var i = 0; i < ops.length; i++) {
       add_op(ops[i]);
     }

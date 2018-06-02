@@ -273,7 +273,7 @@ h1 {
 }
 
 #theorem-manager-body{
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: auto auto auto auto auto;
 }
 
 #def-manager-body{
@@ -297,7 +297,7 @@ h1 {
   margin-bottom: auto;
 }
 
-#theorem-manager-body div:nth-child(4n+6):hover,#def-manager-body div:nth-child(6n+10):hover {
+#theorem-manager-body div:nth-child(5n+7):hover,#def-manager-body div:nth-child(6n+10):hover {
   background: #ffc6ac;
   cursor: pointer;
   outline: 2px solid #002a32;
