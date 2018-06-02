@@ -94,3 +94,90 @@ var get_new_def_id=function(){
   while (ids.includes("def" + i)) i = i + 1;
   return "def"+i;
 }
+
+DefManager = (function() {
+  document.querySelector("#def-manager .close").onclick = function() {
+    document.querySelector("#def-manager").style.display = "none";
+  };
+
+  var init = function() {
+    var bod = document.querySelector("#def-manager-body");
+    for (var i in Operation.global_operations) {
+      var div1 = document.createElement("div");
+      bod.appendChild(div1);
+
+      var div = document.createElement("div");
+      div.innerHTML = Operation.global_operations[i].type===Operation.EXPRESSION ? "Expression" : "Relation";
+      bod.appendChild(div);
+
+      var div = document.createElement("div");
+      div.innerHTML = Operation.global_operations[i].no_of_args;
+      bod.appendChild(div);
+
+      var div = document.createElement("div");
+      bod.appendChild(div);
+      div.onclick = (function(x,y,z) {
+        return function() {
+          var daj = prompt("Enter new schema", x.innerHTML);
+          if (daj) x.innerHTML = daj;
+          y.innerHTML=html_from_formula((new Formula([new Operation("asop",Operation.global_operations[z].no_of_args,
+            daj,Operation.global_operations[z].type)])).fill_with_placeholders());
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        }
+      })(div,div1,i);
+
+      var div = document.createElement("div");
+      div.innerHTML = '<input type="checkbox">';
+      bod.appendChild(div);
+
+      var div = document.createElement("div");
+      var button = document.createElement("button");
+      div.appendChild(button);
+      button.innerHTML = "Delete";
+      button.onclick = (function(x) {
+        return function() {
+          var k=0;
+          while(k<theorems.length){
+            if (theorems[k].formula.body.includes(Operation.global_operations[x])){
+              theorems.splice(k,1);
+            } else {
+              k+=1;
+            }
+          }
+          Operation.global_operations.splice(x,1);
+          IO.save();
+        }
+      })(i);
+      bod.appendChild(div);
+    }
+
+  }
+
+  var fill=function(){
+    var nodes=document.querySelectorAll("#def-manager-body > div");
+    for (var i in Operation.global_operations) {
+      nodes[6*i].innerHTML = html_from_formula((new Formula([Operation.global_operations[i]])).fill_with_placeholders());
+      nodes[6*i+3].innerHTML = Operation.global_operations[i].print_scheme;
+      nodes[6*i+4].childNodes[0].checked=Operation.global_operations[i].hidden ? true : false;
+    }
+  }
+
+  var show = function() {
+    fill();
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    document.querySelector("#def-manager").style.display = "block";
+  }
+
+  document.querySelector("#def-man-cancel").onclick = function() {
+    document.querySelector("#def-manager").style.display = "none";
+  }
+
+  document.querySelector("#def-man-done").onclick = function() {
+  }
+
+  return {
+    show: show,
+    init: init
+  }
+
+})()

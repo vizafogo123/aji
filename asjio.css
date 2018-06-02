@@ -264,16 +264,23 @@ h1 {
   background: #c4a29e;
 }
 
-#theorem-manager-body {
+#theorem-manager-body,#def-manager-body{
   display: grid;
   grid-gap: 0px;
-  grid-template-columns: auto auto auto auto;
   background: #c4a29e;
   text-align: center;
   padding-bottom:50px;
 }
 
-#theorem-manager-footer {
+#theorem-manager-body{
+  grid-template-columns: auto auto auto auto;
+}
+
+#def-manager-body{
+  grid-template-columns: auto auto auto auto auto auto;
+}
+
+#theorem-manager-footer,#def-manager-footer {
   padding: 2px 16px;
   background-color: #f40076;
   color: black;
@@ -281,7 +288,7 @@ h1 {
   grid-template-columns: auto auto;
 }
 
-#theorem-manager-footer button {
+#theorem-manager-footer button,#def-manager-footer button {
   height: 40px;
   width: 100px;
   margin-left: auto;
@@ -290,7 +297,7 @@ h1 {
   margin-bottom: auto;
 }
 
-#theorem-manager-body div:nth-child(4n+6):hover {
+#theorem-manager-body div:nth-child(4n+6):hover,#def-manager-body div:nth-child(6n+10):hover {
   background: #ffc6ac;
   cursor: pointer;
   outline: 2px solid #002a32;

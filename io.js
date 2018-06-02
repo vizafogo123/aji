@@ -54,6 +54,7 @@ IO = (function() {
         FormulaBuilder.init();
         TheoremManager.init();
         NewDefWindow.init();
+        DefManager.init();
       }
     };
     xhttp.open("GET", "http://127.0.0.1:3000/?file=a.json", true);

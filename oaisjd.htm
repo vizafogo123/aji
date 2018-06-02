@@ -18,6 +18,7 @@
       <input type="button" value="Save" onclick="TheoremPane.save_request();" />
       <input type="button" value="New def" onclick="NewDefWindow.show();" />
       <input type="button" value="Theorem manager" onclick="TheoremManager.show();" />
+      <input type="button" value="Definition manager" onclick="DefManager.show();" />
       <img id="assumption" src="img\assumption.svg" onclick="Proof.make_assumption();">
       <img id="delete" src="img\delete.svg">
     </div>
@@ -132,6 +133,27 @@
       <div id="theorem-manager-footer" class="modal-footer">
         <button id="th-man-cancel">cancel</button>
         <button id="th-man-done">done</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="def-manager" class="modal">
+    <div id="def-manager-content" class="modal-content">
+      <div id="def-manager-header" class="modal-header">
+        <span class="close">×</span>
+        <h2>Theorems</h2>
+      </div>
+      <div id="def-manager-body" class="modal-body">
+        <h1>preview</h1>
+        <h1>type</h1>
+        <h1>arity</h1>
+        <h1>LaTeX schema</h1>
+        <h1>hidden</h1>
+        <h1>delete</h1>
+      </div>
+      <div id="def-manager-footer" class="modal-footer">
+        <button id="def-man-cancel">cancel</button>
+        <button id="def-man-done">done</button>
       </div>
     </div>
   </div>

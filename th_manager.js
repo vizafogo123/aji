@@ -37,7 +37,7 @@ TheoremManager = (function() {
         var button = document.createElement("button");
         div.appendChild(button);
         button.innerHTML = "Create";
-        button.onclick = function() {
+        button.onclick = (function(i,j) {return function() {
           var daj="def \\left( ";
           for (var k=2;k<=j;k=k+2) daj=daj+"%"+(k/2)+" ";
           daj=daj+"\\right)"
@@ -51,6 +51,7 @@ TheoremManager = (function() {
           console.log(theorems);
           IO.save();
         }
+      })(i,j);
       }
     }
 
