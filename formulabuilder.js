@@ -105,9 +105,9 @@ FormulaBuilder = (function() {
 
   var refresh_locals = function() {
     remove_all_child_nodes(document.getElementById("loc"));
-
-    for (var i in Operation.local_operations) {
-      add_op(Operation.local_operations[i], local = true);
+    var ops=Operation.local_operations.concat(Operation.blank_operations);
+    for (var i in ops) {
+      add_op(ops[i], local = true);
     }
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }

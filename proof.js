@@ -353,10 +353,15 @@ Proof = (function() {
     for (var i in f.formula.body) {
       if (f.formula.body[i].id.slice(0, 5) === "local") return;
     }
-    theorems.push({
+
+    var res={
       formula: f.formula,
       folder: folder
-    });
+    };
+    var k=f.formula.body.findIndex(function(x){return x.id==="blank"});
+    if (k>-1) res.schema=[f.formula.body[k]];
+
+    theorems.push(res);
     IO.save();
   }
 

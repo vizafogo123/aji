@@ -59,18 +59,24 @@ NewDefWindow = (function() {
     };
 
     document.querySelector("#def-done").onclick = function() {
-      var f = res_formula;
-      for (var i = no_of_args - 1; i >= 0; i--) {
-        f.body = [FORALL, VARS[i]].concat(f.substitute(new Formula([ARGUMENTS[i]]), new Formula([VARS[i]])).body);
+      if (document.querySelector("#def-scope > input").checked) {
+        var f = res_formula;
+        for (var i = no_of_args - 1; i >= 0; i--) {
+          f.body = [FORALL, VARS[i]].concat(f.substitute(new Formula([ARGUMENTS[i]]), new Formula([VARS[i]])).body);
+        }
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        Operation.global_operations.push(op);
+        theorems.push({
+          formula: f,
+          folder: "(base)"
+        });
+        IO.save();
+      } else {
+        op.id="blank"
+        Operation.blank_operations.push(op);
+        FormulaBuilder.refresh_locals();
+        document.querySelector("#new-def").style.display = "none";
       }
-      //document.querySelector("#def-formula").innerHTML=html_from_formula(f);
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-      Operation.global_operations.push(op);
-      theorems.push({
-        formula: f,
-        folder: "(base)"
-      });
-      IO.save();
     };
 
   }
@@ -86,13 +92,13 @@ NewDefWindow = (function() {
 
 })()
 
-var get_new_def_id=function(){
+var get_new_def_id = function() {
   var i = 1,
     ids = Operation.global_operations.map(function(x) {
       return x.id
     });
   while (ids.includes("def" + i)) i = i + 1;
-  return "def"+i;
+  return "def" + i;
 }
 
 DefManager = (function() {
@@ -107,7 +113,7 @@ DefManager = (function() {
       bod.appendChild(div1);
 
       var div = document.createElement("div");
-      div.innerHTML = Operation.global_operations[i].type===Operation.EXPRESSION ? "Expression" : "Relation";
+      div.innerHTML = Operation.global_operations[i].type === Operation.EXPRESSION ? "Expression" : "Relation";
       bod.appendChild(div);
 
       var div = document.createElement("div");
@@ -116,15 +122,15 @@ DefManager = (function() {
 
       var div = document.createElement("div");
       bod.appendChild(div);
-      div.onclick = (function(x,y,z) {
+      div.onclick = (function(x, y, z) {
         return function() {
           var daj = prompt("Enter new schema", x.innerHTML);
           if (daj) x.innerHTML = daj;
-          y.innerHTML=html_from_formula((new Formula([new Operation("asop",Operation.global_operations[z].no_of_args,
-            daj,Operation.global_operations[z].type)])).fill_with_placeholders());
+          y.innerHTML = html_from_formula((new Formula([new Operation("asop", Operation.global_operations[z].no_of_args,
+            daj, Operation.global_operations[z].type)])).fill_with_placeholders());
           MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
-      })(div,div1,i);
+      })(div, div1, i);
 
       var div = document.createElement("div");
       div.innerHTML = '<input type="checkbox">';
@@ -136,15 +142,15 @@ DefManager = (function() {
       button.innerHTML = "Delete";
       button.onclick = (function(x) {
         return function() {
-          var k=0;
-          while(k<theorems.length){
-            if (theorems[k].formula.body.includes(Operation.global_operations[x])){
-              theorems.splice(k,1);
+          var k = 0;
+          while (k < theorems.length) {
+            if (theorems[k].formula.body.includes(Operation.global_operations[x])) {
+              theorems.splice(k, 1);
             } else {
-              k+=1;
+              k += 1;
             }
           }
-          Operation.global_operations.splice(x,1);
+          Operation.global_operations.splice(x, 1);
           IO.save();
         }
       })(i);
@@ -153,12 +159,12 @@ DefManager = (function() {
 
   }
 
-  var fill=function(){
-    var nodes=document.querySelectorAll("#def-manager-body > div");
+  var fill = function() {
+    var nodes = document.querySelectorAll("#def-manager-body > div");
     for (var i in Operation.global_operations) {
-      nodes[6*i].innerHTML = html_from_formula((new Formula([Operation.global_operations[i]])).fill_with_placeholders());
-      nodes[6*i+3].innerHTML = Operation.global_operations[i].print_scheme;
-      nodes[6*i+4].childNodes[0].checked=Operation.global_operations[i].hidden ? true : false;
+      nodes[6 * i].innerHTML = html_from_formula((new Formula([Operation.global_operations[i]])).fill_with_placeholders());
+      nodes[6 * i + 3].innerHTML = Operation.global_operations[i].print_scheme;
+      nodes[6 * i + 4].childNodes[0].checked = Operation.global_operations[i].hidden ? true : false;
     }
   }
 

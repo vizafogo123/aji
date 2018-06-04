@@ -50,3 +50,4 @@ PLACEHOLDER = new Operation("place", 0, "\\Box", Operation.PLACEHOLDER);
 Operation.builtin_operations = [FORALL, EXISTS, UNIQUE, IF, OR, AND, NOT, EQUI, EQUALS];
 Operation.global_operations=[];
 Operation.local_operations=[];
+Operation.blank_operations=[];
