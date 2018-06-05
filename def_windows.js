@@ -1,6 +1,5 @@
 NewDefWindow = (function() {
   document.querySelector("#new-def .close").onclick = function() {
-    //close();
     document.querySelector("#new-def").style.display = "none";
   };
   var init = function() {
@@ -17,41 +16,64 @@ NewDefWindow = (function() {
     var op = new Operation(get_new_def_id(), no_of_args, "", 0);
     var set_res_formula = function() {
       if (formula) {
-        var f = new Formula([(type === 'rel' ? EQUI : EQUALS), op]
-          .concat(ARGUMENTS.slice(0, no_of_args)).concat(formula.body))
-        document.querySelector("#def-formula").innerHTML = html_from_formula(f);
-        res_formula = f;
+        if (op.print_scheme) {
+          var f = new Formula([(type === 'rel' ? EQUI : EQUALS), op]
+            .concat(ARGUMENTS.slice(0, no_of_args)).concat(formula.body));
+          document.querySelector("#def-formula").innerHTML = html_from_formula(f);
+          res_formula = f;
+        } else {
+          document.querySelector("#def-formula").innerHTML = html_from_formula(formula);
+        }
+      } else {
+        if (op.print_scheme) {
+          document.querySelector("#def-formula").innerHTML = html_from_formula((new Formula([op])).fill_with_placeholders());
+        }  else {
+          document.querySelector("#def-formula").innerHTML = "";
+        }
       }
     }
-    var refresh_op = function() {
+
+    var refresh = function() {
+      no_of_args = Number(document.querySelector("#no-of-args").value);
       op.no_of_args = no_of_args;
-      op.print_scheme = op.print_scheme = document.querySelector("#print-scheme").value;
+      type = document.querySelector("#def-type").value;
       op.type = type === "rel" ? Operation.RELATION : Operation.EXPRESSION;
+      op.print_scheme = document.querySelector("#print-scheme").value;
+      if (!document.querySelector("#def-scope > input").checked) formula=false;
+      document.querySelector("#give-def").disabled=!document.querySelector("#def-scope > input").checked;
+      document.querySelector("#def-done").disabled=!op.print_scheme || (!formula && document.querySelector("#def-scope > input").checked);
+      set_res_formula();
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     }
-    refresh_op();
+
+    refresh();
 
     document.querySelector("#no-of-args").onchange = function() {
-      no_of_args = Number(document.querySelector("#no-of-args").value);
-      refresh_op();
       formula = false;
-      document.querySelector("#def-formula").innerHTML = "";
+      refresh();
     }
 
     document.querySelector("#def-type").onchange = function() {
-      type = document.querySelector("#def-type").value;
       formula = false;
-      refresh_op();
-      document.querySelector("#def-formula").innerHTML = "";
+      refresh();
     }
 
     document.querySelector("#print-scheme").onchange = function() {
-      op.print_scheme = document.querySelector("#print-scheme").value;
+      refresh();
+    }
+
+    document.querySelectorAll("#def-scope > input")[0].onchange = function() {
+      refresh();
+    }
+
+    document.querySelectorAll("#def-scope > input")[1].onchange = function() {
+      refresh();
     }
 
     document.querySelector("#give-def").onclick = function() {
       FormulaBuilder.show(function(f) {
         formula = f;
-        set_res_formula();
+        refresh();
       }, mod = type, args = ARGUMENTS.slice(0, no_of_args), forb_vars = VARS.slice(0, no_of_args).map(function(x) {
         return x.print_scheme
       }))
@@ -72,7 +94,7 @@ NewDefWindow = (function() {
         });
         IO.save();
       } else {
-        op.id="blank"
+        op.id = "blank"
         Operation.blank_operations.push(op);
         FormulaBuilder.refresh_locals();
         document.querySelector("#new-def").style.display = "none";
