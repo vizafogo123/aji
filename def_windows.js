@@ -2,51 +2,55 @@ NewDefWindow = (function() {
   document.querySelector("#new-def .close").onclick = function() {
     document.querySelector("#new-def").style.display = "none";
   };
+
+  var no_of_args,type,formula,res_formula,op_name,op;
+
+  var set_res_formula = function() {
+    if (formula) {
+      if (op.print_scheme) {
+        var f = new Formula([(type === 'rel' ? EQUI : EQUALS), op]
+          .concat(ARGUMENTS.slice(0, no_of_args)).concat(formula.body));
+        document.querySelector("#def-formula").innerHTML = html_from_formula(f);
+        res_formula = f;
+      } else {
+        document.querySelector("#def-formula").innerHTML = html_from_formula(formula);
+      }
+    } else {
+      if (op.print_scheme) {
+        document.querySelector("#def-formula").innerHTML = html_from_formula((new Formula([op])).fill_with_placeholders());
+      }  else {
+        document.querySelector("#def-formula").innerHTML = "";
+      }
+    }
+  }
+
+  var refresh = function() {
+    no_of_args = Number(document.querySelector("#no-of-args").value);
+    op.no_of_args = no_of_args;
+    type = document.querySelector("#def-type").value;
+    op.type = type === "rel" ? Operation.RELATION : Operation.EXPRESSION;
+    op.print_scheme = document.querySelector("#print-scheme").value;
+    if (!document.querySelector("#def-scope > input").checked) formula=false;
+    document.querySelector("#give-def").disabled=!document.querySelector("#def-scope > input").checked;
+    document.querySelector("#def-done").disabled=!op.print_scheme || (!formula && document.querySelector("#def-scope > input").checked);
+    if (Operation.blank_operations.length>0) {
+      document.querySelectorAll("#def-scope > input")[0].checked=true;
+      document.querySelectorAll("#def-scope > input")[1].disabled=true;
+    }
+    set_res_formula();
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+  }
+
   var init = function() {
     var VARS = [
       new Operation("vara", 0, "a", Operation.VARIABLE),
       new Operation("varb", 0, "b", Operation.VARIABLE),
       new Operation("varc", 0, "c", Operation.VARIABLE)
     ];
-    var no_of_args = Number(document.querySelector("#no-of-args").value);
-    var type = document.querySelector("#def-type").value;
-    var formula = false;
-    var res_formula = false;
-    var op_name = "";
-    var op = new Operation(get_new_def_id(), no_of_args, "", 0);
-    var set_res_formula = function() {
-      if (formula) {
-        if (op.print_scheme) {
-          var f = new Formula([(type === 'rel' ? EQUI : EQUALS), op]
-            .concat(ARGUMENTS.slice(0, no_of_args)).concat(formula.body));
-          document.querySelector("#def-formula").innerHTML = html_from_formula(f);
-          res_formula = f;
-        } else {
-          document.querySelector("#def-formula").innerHTML = html_from_formula(formula);
-        }
-      } else {
-        if (op.print_scheme) {
-          document.querySelector("#def-formula").innerHTML = html_from_formula((new Formula([op])).fill_with_placeholders());
-        }  else {
-          document.querySelector("#def-formula").innerHTML = "";
-        }
-      }
-    }
-
-    var refresh = function() {
-      no_of_args = Number(document.querySelector("#no-of-args").value);
-      op.no_of_args = no_of_args;
-      type = document.querySelector("#def-type").value;
-      op.type = type === "rel" ? Operation.RELATION : Operation.EXPRESSION;
-      op.print_scheme = document.querySelector("#print-scheme").value;
-      if (!document.querySelector("#def-scope > input").checked) formula=false;
-      document.querySelector("#give-def").disabled=!document.querySelector("#def-scope > input").checked;
-      document.querySelector("#def-done").disabled=!op.print_scheme || (!formula && document.querySelector("#def-scope > input").checked);
-      set_res_formula();
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-    }
-
-    refresh();
+    formula = false;
+    res_formula = false;
+    op_name = "";
+    op = new Operation(get_new_def_id(), no_of_args, "", 0);
 
     document.querySelector("#no-of-args").onchange = function() {
       formula = false;
@@ -104,6 +108,7 @@ NewDefWindow = (function() {
   }
 
   var show = function() {
+    refresh();
     document.querySelector("#new-def").style.display = "block";
   }
 
