@@ -33,6 +33,7 @@ body {
   border: 1px solid #888;
   width: 80%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
 }
 
 
@@ -60,6 +61,8 @@ body {
   grid-gap: 0px;
   grid-template-columns: 20% auto auto auto auto;
   background: #c4a29e;
+  max-height: 60vh;
+  overflow: auto;
 }
 
 #formula-builder-body > div, #formula-selector-body > div {
@@ -200,6 +203,10 @@ h1 {
   overflow-y: auto;
 }
 
+#theorem-pane {
+  overflow-x: auto;
+  overflow-y: auto;
+}
 
 #proof-pane article:active {
   cursor: grabbing;
@@ -247,9 +254,6 @@ h1 {
 }
 
 #formula-selector-body {
-  display: grid;
-  grid-gap: 0px;
-  grid-template-columns: auto auto;
   background: #c4a29e;
 }
 
@@ -274,10 +278,16 @@ h1 {
   background: #c4a29e;
   text-align: center;
   padding-bottom:50px;
+  max-height: 60vh;
+  overflow: auto;
 }
 
 #theorem-manager-body{
-  grid-template-columns: auto auto auto auto auto;
+  grid-template-columns: auto 200px 80px 80px 80px;
+}
+
+#theorem-manager-body > div{
+  overflow:hidden;
 }
 
 #def-manager-body{

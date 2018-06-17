@@ -169,6 +169,8 @@ FormulaBuilder = (function() {
       for (var i in args) add_op(args[i], local = false, argument = true);
     }
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    //MathJax.Hub.Queue(function(){console.log("op")});
+    //a.style.width=a.children[1].offsetWidth+"px"
     fbuilder.style.display = "block";
   }
 
@@ -190,13 +192,12 @@ FormulaSelector = (function() {
   var remove_all_child_nodes = function(node) {
     var k = node.childElementCount,
       i;
-    for (i = 0; i < k - 1; i++) node.removeChild(node.lastChild);
+    for (i = 0; i < k; i++) node.removeChild(node.lastChild);
   }
 
   var close = function() {
     document.querySelector("#formula-selector").style.display = "none";
-    remove_all_child_nodes(document.querySelector("#left-to-right"))
-    remove_all_child_nodes(document.querySelector("#right-to-left"))
+    remove_all_child_nodes(document.querySelector("#formula-selector-body"))
   }
 
   var add_formulas = function(f_list, node) {
@@ -213,9 +214,21 @@ FormulaSelector = (function() {
     }
   }
 
-  var show = function(ltr, rtl, aft) {
-    add_formulas(ltr, document.querySelector("#left-to-right"));
-    add_formulas(rtl, document.querySelector("#right-to-left"));
+  var show = function(formulas, aft) {
+    var fs=Array(),str=Array();
+    for (var i in formulas){
+      var s=formulas[i].body.reduce(function(total,x){return total+x.id+"."},"");
+      if (!str.includes(s)){
+        str.push(s);
+        fs.push(formulas[i]);
+      }
+    }
+    if (fs.length===0) return;
+    if (fs.length===1) {
+      aft(fs[0]);
+      return
+    }
+    add_formulas(fs, document.querySelector("#formula-selector-body"));
     after = aft;
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     document.querySelector("#formula-selector").style.display = "block";

@@ -233,14 +233,33 @@ Proof = (function() {
   }
 
   var substitution = function(f1, f2) {
-    var res1 = f2.substitute(new Formula(f1.first_child(0)), new Formula(f1.second_child(0)));
-    if (!array_equal(res1.body, f2.body)) {
-      add_formula(res1);
-    } else {
-      var res2 = f2.substitute(new Formula(f1.second_child(0)), new Formula(f1.first_child(0)));
-      if (!array_equal(res2.body, f2.body)) {
-        add_formula(res2);
+    var get_res = function(x, y) {
+      var res = Array();
+      var match = function(k) {
+        for (var j = 0; j < x.length; j++) {
+          if (x[j] !== f2.body[j + k]) return false;
+        }
+        return true;
       }
+
+      for (var i = 0; i <= f2.body.length - x.length; i++) {
+        if (match(i)) {
+          res.push(new Formula(f2.body.slice(0, i).concat(y).concat(f2.body.slice(i + x.length))));
+        }
+      }
+      if (res.length > 0) res.push(f2.substitute(new Formula(x), new Formula(y)));
+      return res;
+    }
+    var r = get_res(f1.first_child(0), f1.second_child(0));
+    if (r.length > 0) {
+      FormulaSelector.show(r, function(f) {
+        add_formula(f)
+      });
+    } else {
+      r = get_res(f1.second_child(0), f1.first_child(0));
+      FormulaSelector.show(r, function(f) {
+        add_formula(f)
+      });
     }
   }
 
@@ -289,9 +308,7 @@ Proof = (function() {
       }
       if (ltr.length + rtl.length === 0) {
         return
-      } else if (ltr.length + rtl.length === 1) {
-        add_formula(ltr.length === 1 ? ltr[0] : rtl[0])
-      } else FormulaSelector.show(ltr, rtl, function(f) {
+      } else FormulaSelector.show(ltr.concat(rtl), function(f) {
         add_formula(f)
       });
     }
@@ -354,12 +371,14 @@ Proof = (function() {
       if (f.formula.body[i].id.slice(0, 5) === "local") return;
     }
 
-    var res={
+    var res = {
       formula: f.formula,
       folder: folder
     };
-    var k=f.formula.body.findIndex(function(x){return x.id==="blank"});
-    if (k>-1) res.schema=[f.formula.body[k]];
+    var k = f.formula.body.findIndex(function(x) {
+      return x.id === "blank"
+    });
+    if (k > -1) res.schema = [f.formula.body[k]];
 
     theorems.push(res);
     IO.save();
