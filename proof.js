@@ -297,14 +297,16 @@ Proof = (function() {
       match = f2.match_subpattern(f1.first_child(k), vars);
       var ltr = Array();
       for (var i in match) {
-        ltr.push(f2.substitute(new Formula(f1.first_child(k)).substitute_parallel(va(), match[i]),
-          new Formula(f1.second_child(k)).substitute_parallel(va(), match[i])))
+        var x=new Formula(f1.first_child(k)).substitute_parallel(va(), match[i].sub);
+        var y=new Formula(f1.second_child(k)).substitute_parallel(va(), match[i].sub);
+        ltr.push(new Formula(f2.body.slice(0,match[i].location).concat(y.body).concat(f2.body.slice(match[i].location+x.body.length))));
       }
       match = f2.match_subpattern(f1.second_child(k), vars);
       var rtl = Array();
       for (var i in match) {
-        rtl.push(f2.substitute(new Formula(f1.second_child(k)).substitute_parallel(va(), match[i]),
-          new Formula(f1.first_child(k)).substitute_parallel(va(), match[i])))
+        var x=new Formula(f1.second_child(k)).substitute_parallel(va(), match[i].sub);
+        var y=new Formula(f1.first_child(k)).substitute_parallel(va(), match[i].sub);
+        rtl.push(new Formula(f2.body.slice(0,match[i].location).concat(y.body).concat(f2.body.slice(match[i].location+x.body.length))));
       }
       if (ltr.length + rtl.length === 0) {
         return

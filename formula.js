@@ -242,7 +242,7 @@ function Formula(body) {
         subf = this.body.slice(i, this.start_of_child(i, this.body[i].no_of_args + 1));
         if (subf.length >= source.length) {
           r = (new Formula(subf)).match_pattern(source, vars);
-          if (r) res.push(r);
+          if (r) res.push({sub:r,location:i});
         }
       }
     }
